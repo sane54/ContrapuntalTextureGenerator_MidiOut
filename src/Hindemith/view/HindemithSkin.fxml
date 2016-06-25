@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" fx:id="HindemithAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Hindemith.view.FXMLDocumentController">
+  <children>
+    <Label layoutX="41.0" layoutY="23.0" prefHeight="46.0" prefWidth="494.0" text="Contrapuntal Texture Generator">
+      <font>
+        <Font name="Candara" size="25.0" />
+      </font>
+    </Label>
+    <ImageView fitHeight="457.75000220298773" fitWidth="610.3333129882812" layoutX="1.0" layoutY="0.0" opacity="0.59" pickOnBounds="true" preserveRatio="true" />
+    <Button fx:id="RunButton" layoutX="266.0" layoutY="342.0" mnemonicParsing="false" onAction="#handleRunButton" text="RUN" />
+    <TabPane layoutX="59.0" layoutY="71.0" prefHeight="259.0" prefWidth="477.0" tabClosingPolicy="UNAVAILABLE">
+      <tabs>
+        <Tab closable="false" text="Basics">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="230.0" prefWidth="529.0">
+              <children>
+                <Button fx:id="fileChooserButton" layoutX="57.0" layoutY="188.0" mnemonicParsing="false" onAction="#handleFileChooserButton" text="Save Midi File as..." />
+                <Label layoutX="57.0" layoutY="16.0" prefWidth="95.0" text="Mode Module" />
+                <ComboBox id="modeModuleCombo" fx:id="modeModuleComboBox" layoutX="57.0" layoutY="36.0" prefWidth="95.0" promptText="Mode Module">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Chromatic Tonic" />
+                      <String fx:value="Lydian" />
+                      <String fx:value="Atonal (w/o Repeat Notes)" />
+                      <String fx:value="Atonal (repeat pitch prefer)" />
+                      <String fx:value="Blues" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <Label layoutX="166.0" layoutY="16.0" prefWidth="95.0" text="Rhythm Module" />
+                <ComboBox id="rhythmModuleChoiceBox" fx:id="rhythmModuleComboBox" layoutX="166.0" layoutY="36.0" prefWidth="109.0" promptText="Rhythm Module">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Funk Rhythm Patterns 1" />
+                      <String fx:value="Funk Rhythm Patterns 2" />
+                      <String fx:value="Drum and Bass Patterns 1" />
+                      <String fx:value="Variable Time Signature Funky" />
+                      <String fx:value="Variable Time Signature Unfunky" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <TextField fx:id="tempoField" layoutX="152.0" layoutY="79.0" prefWidth="40.0" text="160" />
+                <Label layoutX="57.0" layoutY="79.0" prefHeight="20.0" prefWidth="80.0" text="Tempo in bpm" />
+                <TextField fx:id="pieceLengthField" layoutX="152.0" layoutY="105.0" prefWidth="40.0" text="4" />
+                <Label layoutX="57.0" layoutY="105.0" prefHeight="20.0" prefWidth="95.0" text="Length in Bars" />
+                <Label layoutX="294.0" layoutY="36.0" text="Consonances" underline="true" />
+                <Label layoutX="362.0" layoutY="36.0" text="Perfect Consonances" underline="true" />
+                <CheckBox fx:id="cons_min2_chk" layoutX="292.0" layoutY="56.0" mnemonicParsing="false" text="min 2" />
+                <CheckBox fx:id="cons_maj2_chk" layoutX="292.0" layoutY="70.0" mnemonicParsing="false" text="maj 2" />
+                <CheckBox fx:id="cons_min3_chk" layoutX="292.0" layoutY="84.0" mnemonicParsing="false" selected="true" text="min 3" />
+                <CheckBox fx:id="cons_maj3_chk" layoutX="292.0" layoutY="98.0" mnemonicParsing="false" selected="true" text="maj 3" />
+                <CheckBox fx:id="cons_p4_chk" layoutX="292.0" layoutY="112.0" mnemonicParsing="false" text="perf 4" />
+                <CheckBox fx:id="cons_tt_chk" layoutX="292.0" layoutY="126.0" mnemonicParsing="false" text="tritone" />
+                <CheckBox fx:id="cons_p5_chk" layoutX="292.0" layoutY="140.0" mnemonicParsing="false" selected="true" text="perf 5" />
+                <CheckBox fx:id="cons_min6_chk" layoutX="292.0" layoutY="154.0" mnemonicParsing="false" selected="true" text="min 6" />
+                <CheckBox fx:id="cons_maj6_chk" layoutX="292.0" layoutY="168.0" mnemonicParsing="false" selected="true" text="maj 6" />
+                <CheckBox fx:id="cons_dom7_chk" layoutX="292.0" layoutY="182.0" mnemonicParsing="false" text="dom 7" />
+                <CheckBox fx:id="cons_maj7_chk" layoutX="292.0" layoutY="196.0" mnemonicParsing="false" text="maj 7" />
+                <CheckBox fx:id="pcons_min2_chk" layoutX="378.0" layoutY="56.0" mnemonicParsing="false" text="min 2" />
+                <CheckBox fx:id="pcons_maj2_chk" layoutX="378.0" layoutY="70.0" mnemonicParsing="false" text="maj 2" />
+                <CheckBox fx:id="pcons_min3_chk" layoutX="378.0" layoutY="84.0" mnemonicParsing="false" text="min 3" />
+                <CheckBox fx:id="pcons_maj3_chk" layoutX="378.0" layoutY="98.0" mnemonicParsing="false" text="maj 3" />
+                <CheckBox fx:id="pcons_p4_chk" layoutX="378.0" layoutY="112.0" mnemonicParsing="false" text="perf 4" />
+                <CheckBox fx:id="pcons_tt_chk" layoutX="378.0" layoutY="126.0" mnemonicParsing="false" text="tritone" />
+                <CheckBox fx:id="pcons_p5_chk" layoutX="378.0" layoutY="140.0" mnemonicParsing="false" selected="true" text="perf 5" />
+                <CheckBox fx:id="pcons_min6_chk" layoutX="378.0" layoutY="154.0" mnemonicParsing="false" text="min 6" />
+                <CheckBox fx:id="pcons_maj6_chk" layoutX="378.0" layoutY="168.0" mnemonicParsing="false" text="maj 6" />
+                <CheckBox fx:id="pcons_dom7_chk" layoutX="378.0" layoutY="182.0" mnemonicParsing="false" text="dom 7" />
+                <CheckBox fx:id="pcons_maj7_chk" layoutX="378.0" layoutY="196.0" mnemonicParsing="false" text="maj 7" />
+                <CheckBox fx:id="cons_oct_chk" layoutX="292.0" layoutY="210.0" mnemonicParsing="false" selected="true" text="oct" />
+                <CheckBox fx:id="pcons_oct_chk" layoutX="378.0" layoutY="210.0" mnemonicParsing="false" selected="true" text="oct" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Harmonic Rule Violation Severity">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <Slider fx:id="AccentDSlider" layoutX="170.0" layoutY="22.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="6.0" layoutY="22.0" prefWidth="162.0" text="Accented dissonance" />
+                <Label layoutX="6.0" layoutY="42.0" prefWidth="162.0" text="Bad approach to diss from cons" />
+                <Slider fx:id="BadApproachDfromDSlider" layoutX="170.0" layoutY="42.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="6.0" layoutY="62.0" prefWidth="162.0" text="Bad approach to diss from diss" />
+                <Slider fx:id="BadApproachDfromCSlider" layoutX="170.0" layoutY="62.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="6.0" layoutY="82.0" prefWidth="162.0" text="Both voices change into a diss" />
+                <Slider fx:id="BothChangetoDSlider" layoutX="170.0" layoutY="82.0" prefWidth="69.0"  blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0"/>
+                <Slider fx:id="DirectMotionIntoDSlider" layoutX="407.0" layoutY="22.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="245.0" layoutY="22.0" prefWidth="162.0" text="Direct motion into dissonance" />
+                <Label layoutX="245.0" layoutY="42.0" prefWidth="162.0" text="Minor 9th" />
+                <Slider fx:id="Min9thSlider" layoutX="407.0" layoutY="42.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="245.0" layoutY="62.0" prefWidth="162.0" text="Bad approach to cons from diss" />
+                <Slider fx:id="BadApproachCfromDSlider" layoutX="407.0" layoutY="62.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="245.0" layoutY="82.0" prefWidth="162.0" text="Direct motion into perf cons" />
+                <Slider fx:id="DirectMotionIntoPerfCSlider" layoutX="407.0" layoutY="82.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="170.0" layoutY="6.0" text="OK" />
+                <Label layoutX="219.0" layoutY="6.0" text="Bad" />
+                <Label layoutX="407.0" layoutY="6.0" text="OK" />
+                <Label layoutX="449.0" layoutY="5.0" text="Bad" />
+                <Slider fx:id="SeqOfDSlider" layoutX="170.0" layoutY="102.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="6.0" layoutY="102.0" prefWidth="162.0" text="Sequence of dissonance" />
+                <Label layoutX="6.0" layoutY="122.0" prefWidth="162.0" text="Sequence of same diss type" />
+                <Slider fx:id="SeqOfSameDSlider" layoutX="170.0" layoutY="122.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="6.0" layoutY="142.0" prefWidth="162.0" text="Parallel Dissonance" />
+                <Slider fx:id="ParallelDSlider" layoutX="170.0" layoutY="142.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="6.0" layoutY="162.0" prefWidth="162.0" text="Diss w previous Cantus Firmus" />
+                <Slider fx:id="DWithPrevCFSlider" layoutX="170.0" layoutY="162.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="ParallelPerfCSlider" layoutX="407.0" layoutY="102.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="245.0" layoutY="102.0" prefWidth="162.0" text="Parallel perfect consonances" />
+                <Label layoutX="245.0" layoutY="122.0" prefWidth="162.0" text="Sequence of same consonance" />
+                <Slider fx:id="SeqOfSameCSlider" layoutX="407.0" layoutY="122.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="245.0" layoutY="142.0" prefWidth="162.0" text="Sequence of same type cons" />
+                <Slider fx:id="SeqOfSameTypeCSlider" layoutX="407.0" layoutY="142.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="245.0" layoutY="162.0" prefWidth="162.0" text="Octaves" />
+                <Slider fx:id="OctaveSlider" layoutX="407.0" layoutY="162.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="6.0" layoutY="182.0" prefWidth="162.0" text="Prev cp diss w cf unresolved" />
+                <Slider fx:id="PrevCPDWithCFUnresolvedSlider" layoutX="170.0" layoutY="182.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Melodic Rule Violation Severity">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <Label layoutX="32.0" layoutY="23.0" prefWidth="175.0" text="Melody repeats its peak or trough" />
+                <Slider fx:id="MelodyRepeatsPeakSlider" layoutX="207.0" layoutY="27.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="ExcessSimilarSlider" layoutX="207.0" layoutY="57.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="SuccessiveLeapSlider" layoutX="207.0" layoutY="87.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="BadMotionAfterLeapSlider" layoutX="207.0" layoutY="117.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="OutsideVoiceRangeSlider" layoutX="207.0" layoutY="147.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="RemotePitchCenterSlider" layoutX="207.0" layoutY="177.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="OverlappingVoiceSlider" layoutX="207.0" layoutY="207.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Label layoutX="207.0" layoutY="7.0" text="OK" />
+                <Label layoutX="345.0" layoutY="7.0" text="Bad" />
+                <Label layoutX="32.0" layoutY="53.0" prefWidth="175.0" text="Too much similar melodic motion" />
+                <Label layoutX="32.0" layoutY="83.0" prefWidth="175.0" text="Successive leaps" />
+                <Label layoutX="32.0" layoutY="113.0" prefWidth="175.0" text="Bad motion after leap" />
+                <Label layoutX="32.0" layoutY="143.0" prefWidth="175.0" text="Melody outside voice range" />
+                <Label layoutX="32.0" layoutY="173.0" prefWidth="175.0" text="Melody remote from pitch center" />
+                <Label layoutX="32.0" layoutY="203.0" prefWidth="175.0" text="Overlapping voices" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Voices">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <CheckBox fx:id="checkboxVoice1" layoutX="29.0" layoutY="23.0" mnemonicParsing="false" text="Voice 1" />
+                <CheckBox fx:id="checkboxVoice2" layoutX="29.0" layoutY="56.0" mnemonicParsing="false" text="Voice 2" />
+                <CheckBox fx:id="checkboxVoice3" layoutX="29.0" layoutY="89.0" mnemonicParsing="false" text="Voice 3" />
+                <CheckBox fx:id="checkboxVoice4" layoutX="29.0" layoutY="122.0" mnemonicParsing="false" text="Voice 4" />
+                <CheckBox fx:id="checkboxVoice5" layoutX="29.0" layoutY="155.0" mnemonicParsing="false" text="Voice 5" />
+                <ComboBox fx:id="comboboxVoice1" layoutX="132.0" layoutY="23.0" prefWidth="101.0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="bass" />
+                      <String fx:value="tenor" />
+                      <String fx:value="alto" />
+                      <String fx:value="soprano" />
+                      <String fx:value="ultra" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <ComboBox fx:id="comboboxVoice2" layoutX="132.0" layoutY="56.0" prefWidth="101.0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="bass" />
+                      <String fx:value="tenor" />
+                      <String fx:value="alto" />
+                      <String fx:value="soprano" />
+                      <String fx:value="ultra" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <ComboBox fx:id="comboboxVoice3" layoutX="132.0" layoutY="89.0" prefWidth="101.0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="bass" />
+                      <String fx:value="tenor" />
+                      <String fx:value="alto" />
+                      <String fx:value="soprano" />
+                      <String fx:value="ultra" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <ComboBox fx:id="comboboxVoice4" layoutX="132.0" layoutY="122.0" prefWidth="101.0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="bass" />
+                      <String fx:value="tenor" />
+                      <String fx:value="alto" />
+                      <String fx:value="soprano" />
+                      <String fx:value="ultra" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <ComboBox fx:id="comboboxVoice5" layoutX="132.0" layoutY="155.0" prefWidth="101.0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="bass" />
+                      <String fx:value="tenor" />
+                      <String fx:value="alto" />
+                      <String fx:value="soprano" />
+                      <String fx:value="ultra" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <ChoiceBox fx:id="choiceboxDissOK" layoutX="323.0" layoutY="77.0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Yes" />
+                      <String fx:value="No" />
+                    </FXCollections>
+                  </items>
+                </ChoiceBox>
+                <Label layoutX="258.0" layoutY="52.0" prefWidth="209.0" text="Dissonances milder across large intervals?" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+  </children>
+</AnchorPane>
