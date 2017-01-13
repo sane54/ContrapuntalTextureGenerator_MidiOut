@@ -33,6 +33,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 
@@ -196,6 +197,8 @@ public class FXMLDocumentController implements Initializable {
     static Boolean runCancelled = false;
     
     static ProgressTicker progress = new ProgressTicker();
+    @FXML
+    private AnchorPane HindemithAnchor;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
