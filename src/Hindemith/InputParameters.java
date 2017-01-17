@@ -24,7 +24,7 @@ import java.io.File;
  * @author alyssa
  */
 public class InputParameters {
-static Boolean out_to_midi_yoke = true;
+static Boolean out_to_midi_yoke = false;
 static Integer [] consonances = {0, 3, 4, 7, 8, 9};
 static Integer [] perfect_consonances = {0, 7};
 static Integer [] root_consonances = {0, 3, 4, 7};

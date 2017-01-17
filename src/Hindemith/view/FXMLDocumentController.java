@@ -186,6 +186,9 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     ChoiceBox choiceboxDissOK = new ChoiceBox();
     
+    @FXML
+    CheckBox midi_out_chk = new CheckBox(); 
+    
     Stage ctrlStage = new Stage(); //Do i need this?
     String filePath = new String(); //Do i need this?
     
@@ -360,6 +363,7 @@ public class FXMLDocumentController implements Initializable {
         
         if(choiceboxDissOK.getValue() == "Yes") Hindemith.InputParameters.setLargeDissonanceBad(true);
         if(choiceboxDissOK.getValue() == "No")  Hindemith.InputParameters.setLargeDissonanceBad(false);
+        if(midi_out_chk.isSelected()) Hindemith.InputParameters.set_out_to_midi_yoke(true);
         
         Hindemith.Decrements.setAccented_Dissonance((int)AccentDSlider.getValue());
         Hindemith.Decrements.setBad_Cons_Approach_From_Diss((int)BadApproachCfromDSlider.getValue());

@@ -79,6 +79,7 @@
                 <CheckBox fx:id="pcons_maj7_chk" layoutX="378.0" layoutY="196.0" mnemonicParsing="false" text="maj 7" />
                 <CheckBox fx:id="cons_oct_chk" layoutX="292.0" layoutY="210.0" mnemonicParsing="false" selected="true" text="oct" />
                 <CheckBox fx:id="pcons_oct_chk" layoutX="378.0" layoutY="210.0" mnemonicParsing="false" selected="true" text="oct" />
+                <CheckBox fx:id="midi_out_chk" layoutX="57.0" layoutY="146.0" mnemonicParsing="false" text="Midi Out Via Midi Yoke" />
               </children>
             </AnchorPane>
           </content>
@@ -87,44 +88,44 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Slider fx:id="AccentDSlider" layoutX="170.0" layoutY="22.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="AccentDSlider" blockIncrement="1.0" layoutX="170.0" layoutY="22.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="6.0" layoutY="22.0" prefWidth="162.0" text="Accented dissonance" />
                 <Label layoutX="6.0" layoutY="42.0" prefWidth="162.0" text="Bad approach to diss from cons" />
-                <Slider fx:id="BadApproachDfromDSlider" layoutX="170.0" layoutY="42.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="BadApproachDfromDSlider" blockIncrement="1.0" layoutX="170.0" layoutY="42.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="6.0" layoutY="62.0" prefWidth="162.0" text="Bad approach to diss from diss" />
-                <Slider fx:id="BadApproachDfromCSlider" layoutX="170.0" layoutY="62.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="BadApproachDfromCSlider" blockIncrement="1.0" layoutX="170.0" layoutY="62.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="6.0" layoutY="82.0" prefWidth="162.0" text="Both voices change into a diss" />
-                <Slider fx:id="BothChangetoDSlider" layoutX="170.0" layoutY="82.0" prefWidth="69.0"  blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0"/>
-                <Slider fx:id="DirectMotionIntoDSlider" layoutX="407.0" layoutY="22.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="BothChangetoDSlider" blockIncrement="1.0" layoutX="170.0" layoutY="82.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="DirectMotionIntoDSlider" blockIncrement="1.0" layoutX="407.0" layoutY="22.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="245.0" layoutY="22.0" prefWidth="162.0" text="Direct motion into dissonance" />
                 <Label layoutX="245.0" layoutY="42.0" prefWidth="162.0" text="Minor 9th" />
-                <Slider fx:id="Min9thSlider" layoutX="407.0" layoutY="42.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="Min9thSlider" blockIncrement="1.0" layoutX="407.0" layoutY="42.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="245.0" layoutY="62.0" prefWidth="162.0" text="Bad approach to cons from diss" />
-                <Slider fx:id="BadApproachCfromDSlider" layoutX="407.0" layoutY="62.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="BadApproachCfromDSlider" blockIncrement="1.0" layoutX="407.0" layoutY="62.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="245.0" layoutY="82.0" prefWidth="162.0" text="Direct motion into perf cons" />
-                <Slider fx:id="DirectMotionIntoPerfCSlider" layoutX="407.0" layoutY="82.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="DirectMotionIntoPerfCSlider" blockIncrement="1.0" layoutX="407.0" layoutY="82.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="170.0" layoutY="6.0" text="OK" />
                 <Label layoutX="219.0" layoutY="6.0" text="Bad" />
                 <Label layoutX="407.0" layoutY="6.0" text="OK" />
                 <Label layoutX="449.0" layoutY="5.0" text="Bad" />
-                <Slider fx:id="SeqOfDSlider" layoutX="170.0" layoutY="102.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="SeqOfDSlider" blockIncrement="1.0" layoutX="170.0" layoutY="102.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="6.0" layoutY="102.0" prefWidth="162.0" text="Sequence of dissonance" />
                 <Label layoutX="6.0" layoutY="122.0" prefWidth="162.0" text="Sequence of same diss type" />
-                <Slider fx:id="SeqOfSameDSlider" layoutX="170.0" layoutY="122.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="SeqOfSameDSlider" blockIncrement="1.0" layoutX="170.0" layoutY="122.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="6.0" layoutY="142.0" prefWidth="162.0" text="Parallel Dissonance" />
-                <Slider fx:id="ParallelDSlider" layoutX="170.0" layoutY="142.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="ParallelDSlider" blockIncrement="1.0" layoutX="170.0" layoutY="142.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="6.0" layoutY="162.0" prefWidth="162.0" text="Diss w previous Cantus Firmus" />
-                <Slider fx:id="DWithPrevCFSlider" layoutX="170.0" layoutY="162.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
-                <Slider fx:id="ParallelPerfCSlider" layoutX="407.0" layoutY="102.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="DWithPrevCFSlider" blockIncrement="1.0" layoutX="170.0" layoutY="162.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="ParallelPerfCSlider" blockIncrement="1.0" layoutX="407.0" layoutY="102.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="245.0" layoutY="102.0" prefWidth="162.0" text="Parallel perfect consonances" />
                 <Label layoutX="245.0" layoutY="122.0" prefWidth="162.0" text="Sequence of same consonance" />
-                <Slider fx:id="SeqOfSameCSlider" layoutX="407.0" layoutY="122.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="SeqOfSameCSlider" blockIncrement="1.0" layoutX="407.0" layoutY="122.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="245.0" layoutY="142.0" prefWidth="162.0" text="Sequence of same type cons" />
-                <Slider fx:id="SeqOfSameTypeCSlider" layoutX="407.0" layoutY="142.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="SeqOfSameTypeCSlider" blockIncrement="1.0" layoutX="407.0" layoutY="142.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="245.0" layoutY="162.0" prefWidth="162.0" text="Octaves" />
-                <Slider fx:id="OctaveSlider" layoutX="407.0" layoutY="162.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="OctaveSlider" blockIncrement="1.0" layoutX="407.0" layoutY="162.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="6.0" layoutY="182.0" prefWidth="162.0" text="Prev cp diss w cf unresolved" />
-                <Slider fx:id="PrevCPDWithCFUnresolvedSlider" layoutX="170.0" layoutY="182.0" prefWidth="69.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="PrevCPDWithCFUnresolvedSlider" blockIncrement="1.0" layoutX="170.0" layoutY="182.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="69.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
               </children>
             </AnchorPane>
           </content>
@@ -134,13 +135,13 @@
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
                 <Label layoutX="32.0" layoutY="23.0" prefWidth="175.0" text="Melody repeats its peak or trough" />
-                <Slider fx:id="MelodyRepeatsPeakSlider" layoutX="207.0" layoutY="27.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
-                <Slider fx:id="ExcessSimilarSlider" layoutX="207.0" layoutY="57.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
-                <Slider fx:id="SuccessiveLeapSlider" layoutX="207.0" layoutY="87.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
-                <Slider fx:id="BadMotionAfterLeapSlider" layoutX="207.0" layoutY="117.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
-                <Slider fx:id="OutsideVoiceRangeSlider" layoutX="207.0" layoutY="147.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
-                <Slider fx:id="RemotePitchCenterSlider" layoutX="207.0" layoutY="177.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
-                <Slider fx:id="OverlappingVoiceSlider" layoutX="207.0" layoutY="207.0" prefWidth="156.0" blockIncrement="1.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4"  showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="MelodyRepeatsPeakSlider" blockIncrement="1.0" layoutX="207.0" layoutY="27.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="156.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="ExcessSimilarSlider" blockIncrement="1.0" layoutX="207.0" layoutY="57.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="156.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="SuccessiveLeapSlider" blockIncrement="1.0" layoutX="207.0" layoutY="87.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="156.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="BadMotionAfterLeapSlider" blockIncrement="1.0" layoutX="207.0" layoutY="117.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="156.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="OutsideVoiceRangeSlider" blockIncrement="1.0" layoutX="207.0" layoutY="147.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="156.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="RemotePitchCenterSlider" blockIncrement="1.0" layoutX="207.0" layoutY="177.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="156.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+                <Slider fx:id="OverlappingVoiceSlider" blockIncrement="1.0" layoutX="207.0" layoutY="207.0" majorTickUnit="5.0" max="9.0" min="-1.0" minorTickCount="4" prefWidth="156.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
                 <Label layoutX="207.0" layoutY="7.0" text="OK" />
                 <Label layoutX="345.0" layoutY="7.0" text="Bad" />
                 <Label layoutX="32.0" layoutY="53.0" prefWidth="175.0" text="Too much similar melodic motion" />
