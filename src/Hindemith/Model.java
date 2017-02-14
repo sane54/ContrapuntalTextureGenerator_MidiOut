@@ -420,11 +420,11 @@ public class Model {
                 if (harmonic_prog_built) {
                     do {
                             if (stopper) return null;
-                            if (this_key.getPreviousDuration() < CP_note.getPreviousDuration()) {
+                            //if (this_key.getPreviousDuration() < CP_note.getPreviousDuration()) {
                                 MelodicNote prog_stack_note = (MelodicNote)chord_prog_stack.pop();
                                 if (prog_stack_note.getPitch() != 0) this_key.setPitch(prog_stack_note.getPitch());
                                 this_key.setTotalVoiceDuration(prog_stack_note.getPreviousDuration()); 
-                            }
+                            //} YO!! HERE!! IF YOU EVER NEED TO CHANGE THIS!! TEST W REMOVAL AND CHECK BELOW DEBUGS
                             System.out.println("this key = " + this_key.getPitch());
                             System.out.println("this key prevduration = " + this_key.getPreviousDuration());
                             if (this_key.getPreviousDuration() >= CP_note.getStartTime()) {
@@ -502,7 +502,7 @@ public class Model {
                             }
                             if (this_cf.getRest()) {
                                 if (this_cf.getDuration() > .5 || 
-                                        previous_cf_pitch[b] == -1 ||
+                                      //  previous_cf_pitch[b] == -1 || //MISTAKE??
                                          CP_note.getRest()) skip_me = true;
                             }
 
@@ -523,7 +523,7 @@ public class Model {
                                         holdover_cf[b] =  this_cf;
                                 else holdover_cf[b] = null;
 
-                                if (!skip_me) previous_cf_pitch[b] = this_cf.getPitch();
+                                if (!this_cf.getRest()) previous_cf_pitch[b] = this_cf.getPitch();//MISTAKE was (!skip_me) should be if(!this_cf.getRest())
                         } while (this_cf.getPreviousDuration()< CP_note.getPreviousDuration());
                 }
             }
@@ -795,8 +795,9 @@ public class Model {
             Integer [] consonances = InputParameters.consonances;
             Integer [] perfect_consonances = InputParameters.perfect_consonances;
             Integer [] root_consonances = InputParameters.root_consonances;
-            //begin Harmonic checks
             boolean cand_prev_cf_diss = true;
+            //begin Harmonic checks
+
             //Will need to evaluate each CP pitch candidate against the counterpoint notes 
             //in each previously built voice
 
