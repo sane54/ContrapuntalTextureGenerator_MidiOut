@@ -5,6 +5,8 @@
  */
 package Hindemith.view;
 
+import Hindemith.InputParameters;
+import Hindemith.PatternPlayerSaver;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
@@ -264,6 +266,21 @@ public class FXMLDocumentController implements Initializable {
         
         
     }
+    public void playSaveDialog(){
+        boolean proceed;
+        CancelBox.show("Play Pattern?", "You chose not to play");
+        proceed = CancelBox.getProceed();
+        if (proceed) {
+            PatternPlayerSaver.play_pattern();
+        }
+        CancelBox.show("Save Pattern?", "You chose not to save");
+        proceed = CancelBox.getProceed();
+        if (proceed) {
+            if (InputParameters.getFilePath() == null) handleFileChooserButton();
+            PatternPlayerSaver.save_pattern();
+        }
+        
+    }
     
     @FXML
     public void handleFileChooserButton () {
@@ -289,11 +306,12 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public void handleRunButton (ActionEvent event) {
         boolean proceed = true;
-        if(Hindemith.InputParameters.getFilePath() == null){
-            CancelBox.show("Midi will be saved with default name and location. OK?", "No file chosen");
-            proceed = CancelBox.getProceed();
-        }
-        else if (Hindemith.InputParameters.getFilePath().isFile()) {
+//        if(Hindemith.InputParameters.getFilePath() == null){
+//            CancelBox.show("Midi will be saved with default name and location. OK?", "No file chosen");
+//            proceed = CancelBox.getProceed();
+//        }
+//        else 
+        if (Hindemith.InputParameters.getFilePath() != null && Hindemith.InputParameters.getFilePath().isFile()) {
             CancelBox.show("File will be overwritten. OK?", "Overwrite existing file");
             proceed = CancelBox.getProceed();
         }
@@ -399,17 +417,20 @@ public class FXMLDocumentController implements Initializable {
         fileChooserButton.setDisable(true);
         
         //Starting the counterpoint
-        Hindemith.Model model = new Hindemith.Model();
+        //Hindemith.Model model = new Hindemith.Model();
+        Hindemith.Model_1 model = new Hindemith.Model_1();
         Thread generatorThread = new Thread((Runnable) model.worker);
         generatorThread.start();
         
-        //Buttons disabled when thread is running - re-enabled when thread stops
         model.worker.runningProperty().addListener(
-            (observable, oldvalue, newvalue) -> {
+            (ObservableValue<? extends Boolean> observable, Boolean oldvalue, Boolean newvalue) -> {
          
                 if(newvalue.equals(false)) {
+                    //Buttons disabled when thread is running - re-enabled when thread stops
                     RunButton.setDisable(false);
                     fileChooserButton.setDisable(false);
+                    if (model.worker.getState().equals(model.worker.getState().CANCELLED))return;
+                    else playSaveDialog();
                 } 
         });
         
@@ -425,8 +446,9 @@ public class FXMLDocumentController implements Initializable {
                 if((double)newvalue == 1.0) {
                     stage.close();
                 }    
-        });        
-
+        });  
+        
+        
         Label mylabel = new Label("");
         mylabel.textProperty().bind(model.worker.messageProperty());
         
@@ -453,6 +475,7 @@ public class FXMLDocumentController implements Initializable {
         stage.setScene(new Scene(mystuff));
         stage.show();  
         
+       
         firstRun = false;
             
     }// end of handleRunButtonCode 

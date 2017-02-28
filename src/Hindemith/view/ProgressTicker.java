@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Hindemith.view;
-
+//THIS CLASS ISN'T USED AT ALL
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;

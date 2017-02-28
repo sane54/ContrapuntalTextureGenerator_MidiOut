@@ -33,7 +33,7 @@ import java.util.Date;
  *
  * @author alyssa
  */
-public class Model {
+public class Model_1 {
     public Worker worker;
     public AtomicBoolean shouldThrow = new AtomicBoolean(false);
         
@@ -57,7 +57,7 @@ public class Model {
     static MelodicNote this_key = new MelodicNote();
     private static boolean stopper = false;
     
-    public  Model() {
+    public  Model_1() {
         worker = new Task<String>() {
         @Override
         protected String call() throws Exception {
@@ -70,7 +70,7 @@ public class Model {
             int number_of_voices = voice_array.length;
             Random my_roll = new Random();
             double completedWorkSteps = 0;
-            double totalWorkSteps = number_of_voices + 5;
+            double totalWorkSteps = number_of_voices + 4;
             
             updateProgress(completedWorkSteps, totalWorkSteps);
             updateMessage("Starting...now building rhythm patterns");
@@ -199,50 +199,12 @@ public class Model {
             }
             completedWorkSteps++;
             updateProgress(completedWorkSteps, totalWorkSteps);
-            updateMessage("MIDI sequence built.... now playing\nCan't cancel now!");
+            updateMessage("MIDI sequence built.... ");
             
             //save and play the pattern as a MIDI file
             System.out.println(music_output.getMusicString());
             //Hindemith.view.MessageBox.show("Press OK to Play", "Ready to Play");
-            
-            Player my_player = new Player();
-            if (InputParameters.get_out_to_midi_yoke())  {
-                MidiOut.setDevice();
-                Sequence music_sequence = my_player.getSequence(music_output);
-                MidiOut.device.sendSequence(music_sequence);
-            }
-            else my_player.play(music_output);
-            
-            if (isCancelled()) {
-                resetParams();
-                System.out.println("CANCELLED HERE");    
-                return "cancelled";
-            }
-            else System.out.println("NOT CANCELLED HERE");
-            completedWorkSteps++;
-            updateProgress(completedWorkSteps, totalWorkSteps);
-            updateMessage("Saving MIDI file....");
-            
-            //save the pattern
-            Date today = new Date(System.currentTimeMillis());
-            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd-yyyy-HH-mm");
-            String dateString = DATE_FORMAT.format(today);
-            if(InputParameters.filePath != null) {
-                try {
-                my_player.saveMidi(music_output, InputParameters.filePath);
-                }
-                catch (IOException ex) { 
-                }
-            }    
-            else {
-                try {
-                    my_player.saveMidi(music_output, new File(tempo_bpm + "-" + dateString + ".mid"));
-                }
-                catch (IOException ex2) {
-                
-                }
-            }
-            
+            PatternPlayerSaver.add_pattern(music_output);
             //all done
             completedWorkSteps++;
             updateProgress(completedWorkSteps, totalWorkSteps);

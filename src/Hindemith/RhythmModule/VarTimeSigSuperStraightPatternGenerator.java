@@ -51,11 +51,24 @@ public class VarTimeSigSuperStraightPatternGenerator  implements RhythmModule{
                             System.out.println("measure length " + measure);
                             while (beat <= measure) 	{                      //for each beat
                                     System.out.println("beat " + beat);
-                                    patternIndex = (roll.nextInt(4));
-                                    if (patternIndex == 0) jPattern.add("A4q");   
-                                    if (patternIndex == 1) jPattern.add("A4i C4i");
-                                    if (patternIndex == 2) jPattern.add("A4s C4s C4i");
-                                    if (patternIndex == 3) jPattern.add("A4s C4s C4s C4s");
+                                    if (voice == 0){
+                                        if (beat == 1 && barNum == 0 ) {
+                                            jPattern.add("A4s Rs Rs Rs");
+                                        }
+                                        else {
+                                            patternIndex = roll.nextInt(2);
+                                            if (patternIndex == 0) jPattern.add("A4s Rs Rs Rs");
+                                            if (patternIndex == 1) jPattern.add("Rs Rs Rs Rs"); 
+                                        }
+                                    }
+                                    else {
+                                        patternIndex = (roll.nextInt(4));
+                                        if (patternIndex == 0) jPattern.add("A4q");   
+                                        if (patternIndex == 1) jPattern.add("A4i C4i");
+                                        if (patternIndex == 2) jPattern.add("A4s C4s C4i");
+                                        if (patternIndex == 3) jPattern.add("A4s C4s C4s C4s");
+                                    }
+
                                     beat++;
 
                                     //System.out.println("patternIndex " + patternIndex);
