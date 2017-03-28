@@ -16,7 +16,7 @@
         <Font name="Candara" size="25.0" />
       </font>
     </Label>
-    <ImageView fitHeight="457.75000220298773" fitWidth="610.3333129882812" layoutX="1.0" layoutY="0.0" opacity="0.59" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fitHeight="457.75000220298773" fitWidth="610.3333129882812" layoutX="0.0" layoutY="0.0" opacity="0.59" pickOnBounds="true" preserveRatio="true" />
     <Button fx:id="RunButton" layoutX="266.0" layoutY="342.0" mnemonicParsing="false" onAction="#handleRunButton" text="RUN" />
     <TabPane layoutX="59.0" layoutY="71.0" prefHeight="259.0" prefWidth="477.0" tabClosingPolicy="UNAVAILABLE">
       <tabs>
@@ -233,5 +233,8 @@
         </Tab>
       </tabs>
     </TabPane>
+    <Button layoutX="59.0" layoutY="342.0" mnemonicParsing="false" onAction="#handlePlayButton" text="PLAY" />
+    <Button layoutX="134.0" layoutY="342.0" mnemonicParsing="false" onAction="#handlePauseButton" text="PAUSE" />
+    <Button layoutX="377.0" layoutY="342.0" mnemonicParsing="false" onAction="#handleStopButton" text="STOP" />
   </children>
 </AnchorPane>

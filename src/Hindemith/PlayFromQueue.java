@@ -43,6 +43,7 @@ public class PlayFromQueue {
             MidiOut.device.sendSequence(music_sequence);
         }
             else my_player.play(music_output);
+        
     }
 
     public static void save_pattern_from_queue() {

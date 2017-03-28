@@ -9,22 +9,16 @@ import static Hindemith.InputParameters.tempo_bpm;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import javax.sound.midi.Sequence;
-import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiSystem;
-import org.jfugue.DeviceThatWillReceiveMidi;
-import javax.sound.midi.MidiUnavailableException;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import org.jfugue.*;
 
 
 /**
  *
- * @author Owner
+ * SEPARATE OUT THE SAVER STORAGE FUNCTIONS INTO PATTERNSAVER AND THE PLAY
+ * 
+ * FUNCTIONS INTO PATTERNPLAYER
  */
 public class PatternPlayerSaver {
     static Player pps_player = new Player();
@@ -34,15 +28,41 @@ public class PatternPlayerSaver {
         music_output = my_pattern;
     }
     
-    public static void play_pattern(){
+    public static Pattern get_pattern() {
+        return music_output;
+    }
+            
+    
+    public static boolean play_pattern(){
         if (InputParameters.get_out_to_midi_yoke())  {
             MidiOut.setDevice();
             Sequence music_sequence = pps_player.getSequence(music_output);
             MidiOut.device.sendSequence(music_sequence);
         }
             else pps_player.play(music_output);
+        while (true) {
+            if (pps_player.isFinished()) {
+                System.out.println("pps_player has stopped");
+                break;
+            }
+        }
+        return true;
     }
 
+    public static void pause_player() {
+        pps_player.pause();
+    }
+    
+    public static void resume_player() {
+        pps_player.resume();
+    }
+    
+    
+    public static void stop_player() {
+        pps_player.stop();
+    }
+    
+    
     public static void save_pattern() {
              //save the pattern
             Date today = new Date(System.currentTimeMillis());
@@ -64,5 +84,8 @@ public class PatternPlayerSaver {
                 }
             } 
     }
-      
+   
+    public static void resetPlayer() {
+        pps_player.close();
+    }
 }

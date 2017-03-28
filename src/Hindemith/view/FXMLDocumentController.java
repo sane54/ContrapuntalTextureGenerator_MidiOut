@@ -12,6 +12,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -37,6 +38,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import java.util.concurrent.TimeUnit;
 
 
 
@@ -59,6 +61,15 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     Button RunButton = new Button();
+    
+    @FXML
+    Button PlayButton = new Button();
+    
+    @FXML
+    Button PauseButton = new Button();
+    
+    @FXML
+    Button StopButton = new Button();
     
     @FXML
     Button fileChooserButton = new Button();
@@ -208,7 +219,9 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        
+        PlayButton.setVisible(false);
+        PauseButton.setVisible(false);
+        StopButton.setVisible(false);
         modeModuleComboBox.setValue("Lydian");
         rhythmModuleComboBox.setValue("Drum and Bass Patterns 1");
         choiceboxDissOK.setValue("No");
@@ -266,12 +279,29 @@ public class FXMLDocumentController implements Initializable {
         
         
     }
-    public void playSaveDialog(){
+    public void playSaveDialog() {
         boolean proceed;
+        PlayButton.setVisible(true);
+        PauseButton.setVisible(true);
+        StopButton.setVisible(true);
         CancelBox.show("Play Pattern?", "You chose not to play");
         proceed = CancelBox.getProceed();
         if (proceed) {
-            PatternPlayerSaver.play_pattern();
+            PlayerBox myPlayerBox = new PlayerBox();
+            try {
+                TimeUnit.SECONDS.sleep(6);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+            Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+            for (Thread mythread:  threadArray) {
+                String name = mythread.getName();
+                System.out.println(name);
+            }
+            
+            
+            
         }
         CancelBox.show("Save Pattern?", "You chose not to save");
         proceed = CancelBox.getProceed();
@@ -279,7 +309,7 @@ public class FXMLDocumentController implements Initializable {
             if (InputParameters.getFilePath() == null) handleFileChooserButton();
             PatternPlayerSaver.save_pattern();
         }
-        
+        PatternPlayerSaver.resetPlayer();
     }
     
     @FXML
@@ -430,7 +460,9 @@ public class FXMLDocumentController implements Initializable {
                     RunButton.setDisable(false);
                     fileChooserButton.setDisable(false);
                     if (model.worker.getState().equals(model.worker.getState().CANCELLED))return;
-                    else playSaveDialog();
+
+                        playSaveDialog();
+
                 } 
         });
         
@@ -478,6 +510,21 @@ public class FXMLDocumentController implements Initializable {
        
         firstRun = false;
             
-    }// end of handleRunButtonCode 
+    }// end of handleRunButtonCode
     
+    @FXML
+    public void handlePlayButton (ActionEvent event) {
+       //PatternPlayerSaver.resume_player();
+       PatternPlayerSaver.play_pattern();
+    }
+    
+    @FXML
+    public void handlePauseButton (ActionEvent event) {
+        PatternPlayerSaver.pause_player();
+    }
+
+    @FXML
+    public void handleStopButton (ActionEvent event) {
+        PatternPlayerSaver.stop_player();
+    }    
 }//end of FXMLDocumentController class
