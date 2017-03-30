@@ -38,14 +38,16 @@ public class AccentListener implements ParserListener{
     
     public ArrayList<MelodicNote> listen(Pattern p) {
         parser.addParserListener(this);
-        System.out.println("about to parse" + p.getMusicString());
+        //DEBUG
+        //System.out.println("about to parse" + p.getMusicString());
         try {
             parser.parse(p);
         } catch (JFugueException e)
         {
             e.printStackTrace();
         }
-        System.out.println("accentlistener returning array");
+        //DEBUG
+        //System.out.println("accentlistener returning array");
         printArray(melody_note_array);
         return melody_note_array;
     }
@@ -98,7 +100,8 @@ public class AccentListener implements ParserListener{
     
     @Override
     public void noteEvent(Note note){
-         System.out.println("about to run get accent on " + note.getMusicString() + "with duration " + note.getDecimalDuration()); 
+        //DEBUG
+        //System.out.println("about to run get accent on " + note.getMusicString() + "with duration " + note.getDecimalDuration()); 
          getAccent(note, note.getDecimalDuration());	
 	}
 
@@ -117,11 +120,13 @@ public class AccentListener implements ParserListener{
         double start_time = duration_tally;
         duration_tally = duration_tally + duration;
         ticker = (int)(duration_tally * 16)%2;
-        System.out.println("ticker = " + ticker);
+        //DEBUG
+        //System.out.println("ticker = " + ticker);
         
         if ((note.getMusicString().contains("C0") || note.getMusicString().contains("R"))) {
             is_rest = true;
-            System.out.println(note.getMusicString() + "is a rest");
+            //DEBUG
+            //System.out.println(note.getMusicString() + "is a rest");
         }
         if( pending_note_index >= 0){             
             //If Note is not "R" (ie a rest)
@@ -135,7 +140,8 @@ public class AccentListener implements ParserListener{
                 //In the case of most funky music that is the eighth note
                 if (pending_duration > 0.125){
                     melody_note_array.get(pending_note_index).setAccent(true);
-                    System.out.println("greater or = than 3 16ths rule applied");
+                    //DEBUG
+                    //System.out.println("greater or = than 3 16ths rule applied");
                 }
                 //If it isn't greater than the threshold value is it syncopated
                 //To be syncopated it must be longer than the minimum unit
@@ -149,12 +155,14 @@ public class AccentListener implements ParserListener{
                         if (syncopate) {
                             melody_note_array.get(pending_note_index).setAccent(true);
                             syncopate = false;
-                            System.out.println("syncopate rule applied");
+                            //DEBUG
+                            //System.out.println("syncopate rule applied");
                         }
                         if (pending_duration > prior_duration && prior_duration >= 0) {
                             // the second part of the condition after the "and" isn't needed
                             melody_note_array.get(pending_note_index).setAccent(true);
-                            System.out.println("greater than prior note rule applied");
+                            //DEBUG
+                            //System.out.println("greater than prior note rule applied");
                             
                         }
 
@@ -183,13 +191,15 @@ public class AccentListener implements ParserListener{
                     //which means that THIS note STARTS on the second tick 
                     //of an eighth note, which means it will be a syncopation
                     //if it's held over into the next eighth note duration
-                    System.out.println("syncopate flag set");
+                    //DEBUG                    
+                    //System.out.println("syncopate flag set");
                 }
             }
 
             //Else Just add the rest's duration to the previous duration 
             else {
-                System.out.println("adding rest to pending_duration");
+                //DEBUG
+                //System.out.println("adding rest to pending_duration");
                 pending_duration += duration;
             }
         }
@@ -198,7 +208,8 @@ public class AccentListener implements ParserListener{
         }*/
         if (note.getMusicString().contains("A")) {
             accented = true;
-            System.out.println("Start of Quarter Rule Applied");
+            //DEBUG
+            //System.out.println("Start of Quarter Rule Applied");
         }
         MelodicNote my_melody_note = new MelodicNote();
         my_melody_note.setDuration(duration);
@@ -210,7 +221,8 @@ public class AccentListener implements ParserListener{
         else if (pending_note_index == -1) {
             pending_note_index = 0;
             pending_duration = duration;
-            System.out.println("creating pending note index");
+            //DEBUG
+            //System.out.println("creating pending note index");
         }
         melody_note_array.add(my_melody_note);
         pattern_index++;
@@ -225,7 +237,8 @@ public class AccentListener implements ParserListener{
             if(m_note.getRest() == false) pitch_string = "P";
             if(m_note.getAccent()== false) acc_string = "N";
             if(m_note.getAccent()== true) acc_string = "A";
-            System.out.print( acc_string+ pitch_string + m_note.getDuration());
+            //DEBUG
+            //System.out.print( acc_string+ pitch_string + m_note.getDuration());
             
         }
     }

@@ -89,7 +89,8 @@ public class Model_1 {
                 this_voice.setRange(voice_array[i]);
                 AccentListener my_accent_listener = new AccentListener();
                 this_voice.setNoteArray(my_accent_listener.listen(rhythm_patterns[i]));
-                System.out.println("adding voice " + i + " to unbuiltvoices");
+                //DEBUG
+                //System.out.println("adding voice " + i + " to unbuiltvoices");
                 unbuilt_voices.add(this_voice);
             }
             if (isCancelled()) {
@@ -112,7 +113,8 @@ public class Model_1 {
                 
                 //run buildVoicePitches method on next unbuilt voice
                 int voice_index = i;
-                System.out.println(" about to build voice pitches for "+ voice_index);
+                //DEBUG
+                //System.out.println(" about to build voice pitches for "+ voice_index);
                 MelodicVoice nextVoice = buildVoicePitches(unbuilt_voices.get(voice_index), number_of_voices, my_mode_module);
                 
                 if (isCancelled()) {
@@ -122,11 +124,12 @@ public class Model_1 {
                 
                 //Printing voice strings to Standard Out
                 ArrayList<MelodicNote> verify_array = nextVoice.getNoteArray();
-                System.out.println("Return Me: ");
-                for(MelodicNote verify: verify_array) { 
-                    if (verify.getRest()) System.out.println("rest " + verify.getDuration() + "  " );
-                    else System.out.println(verify.getPitch() + " " + verify.getDuration() + "   ");
-                }
+                //DEBUGS
+//                System.out.println("Return Me: ");
+//                for(MelodicNote verify: verify_array) { 
+//                    if (verify.getRest()) System.out.println("rest " + verify.getDuration() + "  " );
+//                    else System.out.println(verify.getPitch() + " " + verify.getDuration() + "   ");
+//                }
                 
                 if (i == 0) {
                     harmonic_prog = nextVoice;
@@ -177,6 +180,7 @@ public class Model_1 {
                         if (!final_note.getAccent()) jf_note.setAttackVelocity((byte)40);
                     }
                     else {
+                        //DEBUG
                         //System.out.println("setting jf note to rest");
                         jf_note.setRest(true);
                         jf_note.setAttackVelocity((byte)0);
@@ -202,9 +206,9 @@ public class Model_1 {
             updateMessage("MIDI sequence built.... ");
             
             //save and play the pattern as a MIDI file
-            System.out.println(music_output.getMusicString());
-            //Hindemith.view.MessageBox.show("Press OK to Play", "Ready to Play");
-            PatternPlayerSaver.add_pattern(music_output);
+            //DEBUG
+            //System.out.println(music_output.getMusicString());
+            PatternStorerSaver1.add_pattern(music_output);
             //all done
             completedWorkSteps++;
             updateProgress(completedWorkSteps, totalWorkSteps);
@@ -227,16 +231,18 @@ public class Model_1 {
         same_consonant_count = 0;
         int voice_pitch_count = 0;
         LinkedList <MelodicNote> chord_prog_stack = new LinkedList<>();
-
-        System.out.println("voiceRange min " + alter_me.getRangeMin() + "   voicerange max " + alter_me.getRangeMax());
+        
+        //DEBUG
+        //System.out.println("voiceRange min " + alter_me.getRangeMin() + "   voicerange max " + alter_me.getRangeMax());
         Integer pitch_center = my_mode_module.getPitchCenter(alter_me.getRangeMin(), alter_me.getRangeMax());
-        System.out.println("pitchcenter = " + pitch_center);
+        //DEBUG
+        //System.out.println("pitchcenter = " + pitch_center);
 
         if (harmonic_prog_built) {
             ArrayList <MelodicNote> chord_prog_temp = harmonic_prog.getNoteArray();
             for (MelodicNote b_voice_note : chord_prog_temp){
                 if (stopper) {
-                    System.out.println("Stopper = " + stopper);
+                    //System.out.println("Stopper = " + stopper);
                     return null;
                 }
                 chord_prog_stack.add(b_voice_note);
@@ -244,14 +250,12 @@ public class Model_1 {
         }
    
                 if (stopper) {
-                    System.out.println("Stopper = " + stopper);
                     return null;
                 }
         
         if (!built_voices.isEmpty())
         for (MelodicVoice built_voice : built_voices) {
                 if (stopper) {
-                    System.out.println("Stopper = " + stopper);
                     return null;
                 }
              LinkedList <MelodicNote> cf_stack = new LinkedList<>();
@@ -260,14 +264,14 @@ public class Model_1 {
              cf_stack.add(b_voice_note);
              }
              built_voice_queues.add(cf_stack);
-             System.out.println("created stack of melodic notes for each previously built voice ");
+             //DEBUG
+             //System.out.println("created stack of melodic notes for each previously built voice ");
          }
         else {
-
-            System.out.println("built voices Empty - start first melody");
+            //DEBUG
+            //System.out.println("built voices Empty - start first melody");
         }
                 if (stopper) {
-                    System.out.println("Stopper = " + stopper);
                     return null;
                 }
         ArrayList <MelodicNote> current_cf = new ArrayList();
@@ -285,15 +289,18 @@ public class Model_1 {
 
     
         for (int i = 0; i < alter_me.getVoiceLength(); i++){ //for each melodic note in the CP voice
-            System.out.println("assigning pitch to note " + i +" of " + alter_me.getVoiceLength());
+            //DEBUG
+            //System.out.println("assigning pitch to note " + i +" of " + alter_me.getVoiceLength());
             if (stopper) return null;
             MelodicNote CP_note = alter_me.getMelodicNote(i);
             if (!CP_note.getRest()) { 
                 if (current_cp_index >=0) {
                     if(previous_cp_pitch == 9999) previous_cp_pitch = melodic_prev_cp; 
-                    System.out.println("starting melody check on current cp"+ current_cp_index +" of " + alter_me.getVoiceLength());
+                    //DEBUG
+                    //System.out.println("starting melody check on current cp"+ current_cp_index +" of " + alter_me.getVoiceLength());
                     Boolean got_accent = alter_me.getMelodicNote(current_cp_index).getAccent();
-                    System.out.println("the current cp note's accent value is " + got_accent);
+                    //DEBUG
+                    //System.out.println("the current cp note's accent value is " + got_accent);
 
 
     //MELODICALLY EVALUATE Pitch Candiates for Previous Note - Choose CP WinnerS - Previous CP = CP Winner
@@ -303,7 +310,8 @@ public class Model_1 {
                     Integer cp_winner = pickWinner(pitch_candidates);
                      //re-assign variables and move on to next CP note
                     pitch_candidates.clear();
-                    System.out.println("CP winner" + cp_winner + " to note " + current_cp_index);
+                    //DEBUG
+                    //System.out.println("CP winner" + cp_winner + " to note " + current_cp_index);
                     MelodicNote current_cp = alter_me.getMelodicNote(current_cp_index);
                     current_cp.setPitch(cp_winner);
                     return_me.addMelodicNote(current_cp);
@@ -324,7 +332,8 @@ public class Model_1 {
 
                                     trough = previous_cp_pitch;
                                     trough_count = 1;
-                                    System.out.println("setting new trough = " + previous_cp_pitch);
+                                    //DEBUG
+                                    //System.out.println("setting new trough = " + previous_cp_pitch);
 
                                 }
                             }
@@ -335,7 +344,8 @@ public class Model_1 {
                                     if (previous_cp_pitch > peak) {
                                     peak = previous_cp_pitch;
                                     peak_count = 1;
-                                    System.out.println("setting new peak = " + previous_cp_pitch);    
+                                    //DEBUG
+                                    //System.out.println("setting new peak = " + previous_cp_pitch);    
                                     }
 
                                 }
@@ -343,7 +353,8 @@ public class Model_1 {
                         }
 
                         previous_melodic_interval = cp_winner - previous_cp_pitch;
-                        System.out.println("previous melodic interval = " + previous_melodic_interval);
+                        //DEBUG
+                        //System.out.println("previous melodic interval = " + previous_melodic_interval);
 
                         boolean add_pitch = true;
                         for(int pc = 0; pc < pitch_counts.size(); pc++) {
@@ -391,8 +402,9 @@ public class Model_1 {
                                 }
                                 this_key.setTotalVoiceDuration(prog_stack_note.getPreviousDuration()); 
                             //} YO!! HERE!! IF YOU EVER NEED TO CHANGE THIS!! TEST W REMOVAL AND CHECK BELOW DEBUGS
-                            System.out.println("this key = " + this_key.getPitch());
-                            System.out.println("this key prevduration = " + this_key.getPreviousDuration());
+                            //DEBUGS
+                            //System.out.println("this key = " + this_key.getPitch());
+                            //System.out.println("this key prevduration = " + this_key.getPreviousDuration());
                             // place this back into the "if conditional below: this_key.getPreviousDuration() >= CP_note.getStartTime() && 
                             if (chord_change_counter < 2) {
                                 key_transpose = this_key.getPitch()%12;
@@ -401,41 +413,50 @@ public class Model_1 {
                 }
                 if (stopper) return null;
                 if(voice_pitch_count == 0) { // If there is no previous pitch ie this is the first note 
-                    pitch_candidate_values = my_mode_module.getFirstNotePitchCandidates(alter_me.getRangeMin(), alter_me.getRangeMax(), key_transpose) ;
-                    System.out.println("using first note pitch candidates");
+                    pitch_candidate_values = my_mode_module.getFirstNotePitchCandidates(alter_me.getRangeMin(), alter_me.getRangeMax(), key_transpose);
+                    //DEBUG
+                    //System.out.println("using first note pitch candidates");
                 }
                 else {
-                    System.out.println("getting pitch candidates from my modemodule");
+                    //DEBUG
+                    //System.out.println("getting pitch candidates from my modemodule");
                     pitch_candidate_values = my_mode_module.getPitchCandidates(previous_cp_pitch, key_transpose);
-                    if (pitch_candidate_values.isEmpty()) System.out.println("EMPTY ARRAY!!!!");
+                    //DEBUG
+                    //if (pitch_candidate_values.isEmpty()) System.out.println("EMPTY ARRAY!!!!");
                 }
-                System.out.println("voice_pitch_count" + voice_pitch_count);
-                System.out.print("pitch candidates: ");
+                //DEBUG
+                //System.out.println("voice_pitch_count" + voice_pitch_count);
+                //System.out.print("pitch candidates: ");
                 if (stopper) return null;
                 //build pitch_candidate object array with info from rhythm patterns and mode module
                 for (Integer pitch_candidate_value : pitch_candidate_values) {
                     if (stopper) return null;
-                    System.out.print(pitch_candidate_value + " ");
+                    //DEBUG
+                    //System.out.print(pitch_candidate_value + " ");
                     PitchCandidate myPC = new PitchCandidate();
                     myPC.setPitch(pitch_candidate_value);
                     pitch_candidates.add(myPC);
                 }
-                System.out.println();
+                //DEBUG
+                //System.out.println();
 
                 //Reset Current CP index
                 current_cp_index = i;
             }
     //If note is a Rest  add it to the voice       
             else {
-                System.out.println(" is rest ");
+                //DEBUG
+                //System.out.println(" is rest ");
                 if (current_cp_index == -13) {
                     return_me.addMelodicNote(CP_note);
-                    System.out.println("adding rest to beginning of voice");
+                    //DEBUG
+                    //System.out.println("adding rest to beginning of voice");
                     continue;
                 }
                 else {
                     pending_rests.add(CP_note);
-                   System.out.println("adding rest to pending rest array");
+                    //DEBUG
+                    //System.out.println("adding rest to pending rest array");
                 }
             }
             if (stopper) return null;
@@ -458,13 +479,15 @@ public class Model_1 {
                             if (!built_voice_queues.get(b).isEmpty()){
                                 if (holdover_cf[b] != null) this_cf = holdover_cf[b];
                                 else this_cf = (MelodicNote)built_voice_queues.get(b).pop();//pop from builtvoicequeues[b];
-                                System.out.println(" pitch = " + this_cf.getPitch());
-                                System.out.println(" rest = " + this_cf.getRest());
-                                System.out.println(" duration up to  = " + this_cf.getPreviousDuration());
+                                //DEBUGS
+                                //System.out.println(" pitch = " + this_cf.getPitch());
+                                //System.out.println(" rest = " + this_cf.getRest());
+                                //System.out.println(" duration up to  = " + this_cf.getPreviousDuration());
                             }
 
                             else {
-                                System.out.println("cf voice is empty");
+                                //DEBUG
+                                //System.out.println("cf voice is empty");
                                 break;
                             }
                             if (this_cf.getRest()) {
@@ -483,7 +506,8 @@ public class Model_1 {
                                 }                               //in which case the while loop repeats. When you break out
                                                                 //of while loop previous_cp_pitch will be checked and re-assigned above
                                 else {
-                                        System.out.println("current cf index" + b + "is null");
+                                        //DEBUG
+                                        //System.out.println("current cf index" + b + "is null");
                                         break;
                                 }
                                 if (this_cf.getPreviousDuration() > CP_note.getPreviousDuration())
@@ -501,14 +525,16 @@ public class Model_1 {
             if (stopper) return null;
             if (i == alter_me.getVoiceLength()-1) {
                 //MELODICALLY EVALUATE Current CP
-                System.out.println("Last note of voice");
+                //DEBUG
+                //System.out.println("Last note of voice");
                 Boolean last_accent = true;
                 if (!CP_note.getRest()) {
                     if (stopper) return null;
                     pitch_candidates = melodicCheck(pitch_candidates, my_mode_module, alter_me, 
                                  pitch_center, voice_pitch_count, previous_cp_pitch,  previous_melodic_interval, last_accent);
                     Integer cp_winner = pickWinner(pitch_candidates);
-                    System.out.println("CP winner" + cp_winner);
+                    //DEBUG
+                    //System.out.println("CP winner" + cp_winner);
                     pitch_candidates.clear();
                     CP_note.setPitch(cp_winner);
                     return_me.addMelodicNote(CP_note); 
@@ -516,13 +542,16 @@ public class Model_1 {
                 else {
                     if (stopper) return null;
                     Boolean got_accent = alter_me.getMelodicNote(current_cp_index).getAccent();
-                    System.out.println("this note's accent value is " + got_accent);
+                    //DEBUG
+                    //System.out.println("this note's accent value is " + got_accent);
+                    
                     //MELODICALLY EVALUATE Current CP - Choose CP WinnerS - Previous CP = CP Winner
                     pitch_candidates = melodicCheck(pitch_candidates, my_mode_module, alter_me, 
                                  pitch_center, voice_pitch_count, previous_cp_pitch,  previous_melodic_interval, got_accent);
                     Integer cp_winner = pickWinner(pitch_candidates);
                     pitch_candidates.clear();
-                    System.out.println("CP winner" + cp_winner + " to note " + current_cp_index);
+                    //DEBUG
+                    //System.out.println("CP winner" + cp_winner + " to note " + current_cp_index);
                     MelodicNote current_cp = alter_me.getMelodicNote(current_cp_index);
                     current_cp.setPitch(cp_winner);
                     return_me.addMelodicNote(current_cp);
@@ -624,7 +653,8 @@ public class Model_1 {
             int cand_pitch = myPC.getPitch();
             int melody_motion_to_cand = 0;
             
-            System.out.println("melodicCheck evaluating pitch candidate " + cand_pitch);
+            //DEBUG
+            //System.out.println("melodicCheck evaluating pitch candidate " + cand_pitch);
             
             //Check if Dissonant with Root
             boolean root_interval_consonant = false;
@@ -634,39 +664,48 @@ public class Model_1 {
 
             }
             if(root_interval_consonant) {
-                System.out.println(cand_pitch + " root interval consonant");
+                //DEBUG
+                //System.out.println(cand_pitch + " root interval consonant");
             }
             else {
                 if (is_accent ) {
                     myPC.decrementRank(Decrements.dissonant_with_root);
-                    System.out.println(cand_pitch + " dissonant accent with root");
+                    //DEBUG
+                    //System.out.println(cand_pitch + " dissonant accent with root");
                 }
-                else System.out.println("dissonant with root but note accent = " + is_accent );
+                else {
+                    //DEBUG
+                    //System.out.println("dissonant with root but note accent = " + is_accent );
+                }
             } 
             
             
             //randomly decrement non-tonics
             if (cand_pitch%12 != my_mode_module.getTonic() && roll.nextInt(2) == 1){
                 myPC.decrementRank(Decrements.is_not_tonic);
-                System.out.println(cand_pitch + " is not tonic");
+                //DEBUG
+                //System.out.println(cand_pitch + " is not tonic");
             }
             
             //decrement illegal notes
             if(cand_pitch <0 || cand_pitch > 127) {
                 myPC.decrementRank(Decrements.illegal_note);
-                System.out.println(cand_pitch + " is illegal note");                
+                //DEBUG
+                //System.out.println(cand_pitch + " is illegal note");                
             }
 
             //decrement motion outside of voice range                
             if (cand_pitch < alter_me.getRangeMin() || cand_pitch > alter_me.getRangeMax()) {
                 myPC.decrementRank(Decrements.outside_range);
-                 System.out.println(cand_pitch + " outside range " + alter_me.getRangeMin() + "-" + alter_me.getRangeMax());                
+                //DEBUG
+                //System.out.println(cand_pitch + " outside range " + alter_me.getRangeMin() + "-" + alter_me.getRangeMax());                
             }
 
             //decrement too far from pitch center
             if (abs(cand_pitch - pitch_center) > 16) {
                  myPC.decrementRank(Decrements.remote_from_pitchcenter);
-                 System.out.println(cand_pitch + " too far from pitch center" + pitch_center);               
+                 //DEBUG
+                 //System.out.println(cand_pitch + " too far from pitch center" + pitch_center);               
             } 
 
             if (voice_pitch_count > 0) {
@@ -685,22 +724,28 @@ public class Model_1 {
                     if(my_pitch_count.getPitch() == previous_cp_pitch%12)
                         if(my_pitch_count.getCount() > sample_size)
                             for (MotionCount my_motion_count: motion_counts){
-                               //logger.log(Level.INFO, "Entering Motion Counts");
+                               //DEBUG
                                 //System.out.println("pitch_count for " + previous_cp_pitch %12 + " = " + my_pitch_count.getCount());
                                 //System.out.println("motion count " + my_motion_count.getCount());
                                 if (my_motion_count.getPreviousPitch()== previous_cp_pitch %12 && my_motion_count.getSucceedingPitch() == cand_pitch %12) {
                                     double actual = (double)my_motion_count.getCount()/(double)my_pitch_count.getCount();
-                                    System.out.println("actual = " + actual);
+                                    //DEBUG
+                                    //System.out.println("actual = " + actual);
                                     double thresh = 0.20;
                                     if (my_mode_module.getMelodicMotionProbability(cand_pitch, previous_cp_pitch, key_transpose)!= null){
                                       thresh = my_mode_module.getMelodicMotionProbability(cand_pitch, previous_cp_pitch, key_transpose);
-                                      System.out.println("motion probability of " + previous_cp_pitch +" to " + cand_pitch + " = " + thresh  );
+                                      //DEBUG
+                                      //System.out.println("motion probability of " + previous_cp_pitch +" to " + cand_pitch + " = " + thresh  );
                                     }
-                                    else System.out.println("motion probability of " + previous_cp_pitch +" to " + cand_pitch + " is NULL");
+                                    else {
+                                        //DEBUG
+                                        //System.out.println("motion probability of " + previous_cp_pitch +" to " + cand_pitch + " is NULL");
+                                    }
                                         
                                     if (actual >= thresh) {
                                         myPC.decrementRank(Decrements.melodic_motion_quota_exceed);
-                                        System.out.println(cand_pitch + " is approached too often from " + previous_cp_pitch);
+                                        //DEBUG
+                                        //System.out.println(cand_pitch + " is approached too often from " + previous_cp_pitch);
                                     }
                                 }
                             }
@@ -725,26 +770,31 @@ public class Model_1 {
                         peak_count--; //remember to decrement these counts since we won't actually use this pitch
                         trough_count--;
                         myPC.decrementRank(Decrements.peak_trough_quota_exceed);
-                        System.out.println(cand_pitch + " duplicates previous peak or trough");
+                        //DEBUG
+                        //System.out.println(cand_pitch + " duplicates previous peak or trough");
                 }
                 //Motion after Leaps checks
                 //First check if the melody does not go in opposite direction of leap
                 // then check if there are two successive leaps in the same direction
                 if (previous_melodic_interval > 4 && melody_motion_to_cand > 0){
                     myPC.decrementRank(Decrements.bad_motion_after_leap);
-                    System.out.println(melody_motion_to_cand + " to "+ cand_pitch + " is bad motion after leap");
+                    //DEBUG
+                    //System.out.println(melody_motion_to_cand + " to "+ cand_pitch + " is bad motion after leap");
                     if (melody_motion_to_cand > 4) {
                         myPC.decrementRank(Decrements.successive_leaps);
-                        System.out.println(cand_pitch + " is successive leap");
+                        //DEBUG
+                        //System.out.println(cand_pitch + " is successive leap");
                     }
                         
                 }    
                 if (previous_melodic_interval < -4 && melody_motion_to_cand < 0){
                     myPC.decrementRank(Decrements.bad_motion_after_leap);
-                    System.out.println(melody_motion_to_cand + " to "+cand_pitch + " is bad motion after leap");
+                    //DEBUG
+                    //System.out.println(melody_motion_to_cand + " to "+cand_pitch + " is bad motion after leap");
                     if (melody_motion_to_cand < -4) {
                         myPC.decrementRank(Decrements.successive_leaps);  
-                        System.out.println(cand_pitch + " is successive leap");
+                        //DEBUG
+                        //System.out.println(cand_pitch + " is successive leap");
                     }
 
                 }
@@ -778,10 +828,12 @@ public class Model_1 {
                 Integer melody_motion_to_cand = cand_pitch  - cand_prev_pitch;
                 int this_interval = abs(myPC.getPitch() - CF_note.getPitch())%12;
                 
-                System.out.println("this interval  = " + this_interval);
+                //DEBUG
+                //System.out.println("this interval  = " + this_interval);
                 Integer melodic_motion_to_ = cf_pitch - previous_cf_pitch;
                 Integer previous_interval = abs(cand_prev_pitch - previous_cf_pitch)%12;
-                System.out.println("previous interval  = " + previous_interval);
+                //DEBUG
+                //System.out.println("previous interval  = " + previous_interval);
                 Double cp_start_time = CP_note.getStartTime();
                 Double cf_start_time = CF_note.getStartTime();
                 
@@ -790,7 +842,8 @@ public class Model_1 {
                 for (Integer consonance : consonances) {
                     if (this_interval == consonance){
                         this_interval_consonant = true;
-                        System.out.println("this_interval == " +consonance + " means this_interval_consonant == " + this_interval_consonant);    
+                        //DEBUG
+                        //System.out.println("this_interval == " +consonance + " means this_interval_consonant == " + this_interval_consonant);    
                         break;
                     }
 
@@ -799,21 +852,25 @@ public class Model_1 {
                 
                                     
                 if(this_interval_consonant) {
-                    System.out.println("this interval consonant");
+                    //DEBUG
+                    //System.out.println("this interval consonant");
                     if (this_interval ==0) {
                     myPC.decrementRank(Decrements.octave);
-                    System.out.println("octave");
+                    //DEBUG
+                    //System.out.println("octave");
                     }
                 }
                 else {
                         if (this_interval == 1 && (abs(myPC.getPitch() - CF_note.getPitch())<14 || large_dissonance_bad)){
                         myPC.decrementRank(Decrements.minor_9th);
-                        System.out.println("minor 9th");    
+                        //DEBUG
+                        //System.out.println("minor 9th");    
                         }
                         if (CP_note.getAccent() && (abs(myPC.getPitch() - CF_note.getPitch())<36 || large_dissonance_bad)) {
                         //if (CP_note.getAccent() && CP_note.getStartTime()<= CF_note.getStartTime() ) {
                         myPC.decrementRank(Decrements.accented_dissonance);
-                        System.out.println("dissonant accent");
+                        //DEBUG
+                        //System.out.println("dissonant accent");
                     }
                 }                
                 
@@ -824,66 +881,79 @@ public class Model_1 {
                 for (Integer consonance : consonances) {
                     if (previous_interval == consonance) previous_interval_consonant = true;
                 }
-                if(previous_interval_consonant) System.out.println("previous interval consonant");
+                //DEBUG
+                //if(previous_interval_consonant) System.out.println("previous interval consonant");
 
                 
 
                 if (cp_start_time > cf_start_time){
-                    System.out.println("CP starts after CF");   
+                    //DEBUG
+                    //System.out.println("CP starts after CF");   
                     if (melody_motion_to_cand == 0){
                         myPC.decrementRank(Decrements.seq_of_same_cons);
-                        System.out.println("sequence of same consonsance");
+                        //DEBUG
+                        //System.out.println("sequence of same consonsance");
                     }    
                     if (previous_interval_consonant){
                         if (!this_interval_consonant && abs(melody_motion_to_cand) >2) {
                             myPC.decrementRank(Decrements.bad_diss_approach_from_cons);
-                            System.out.println("bad approach to dissonance from consonance");
+                            //DEBUG
+                            //System.out.println("bad approach to dissonance from consonance");
                         }    
                     }
                     else if (this_interval_consonant){
                         if (abs(melody_motion_to_cand) >2){
                             myPC.decrementRank(Decrements.bad_cons_approach_from_diss);
-                            System.out.println("bad approach to consonance from dissonance");
+                            //DEBUG
+                            //System.out.println("bad approach to consonance from dissonance");
                         }
                         
                     }    
                     else {
                         if (abs(melody_motion_to_cand) > 4){ //New_Interval is dissonant
                             myPC.decrementRank(Decrements.bad_diss_approach_from_diss);
-                            System.out.println("bad approach to dissonance from dissonance");
+                            //DEBUG
+                            //System.out.println("bad approach to dissonance from dissonance");
                         }
                         
                     }
                 }
                 
                 else if (cp_start_time < cf_start_time) {
-                    System.out.println("CP starts before CF"); 
+                    //DEBUG
+                    //System.out.println("CP starts before CF"); 
                     if (previous_interval_consonant){
                         if (previous_interval == this_interval) {
                         myPC.decrementRank(Decrements.seq_same_type_cons);
-                        System.out.println("sequence of same typ of consonance");
+                        //DEBUG
+                        //System.out.println("sequence of same typ of consonance");
                         
                         }
                     }             
                     else {//ie Previous_Interval is dissonant
-                        System.out.println("previous interval is dissonant");
+                        //DEBUG
+                        //System.out.println("previous interval is dissonant");
                         if (this_interval_consonant) 
                             if (abs(melodic_motion_to_) > 2) {
                                   myPC.decrementRank(Decrements.bad_cons_approach_from_diss);
-                                  System.out.println("bad approach to consonance from dissonance");
+                                  //DEBUG
+                                  //System.out.println("bad approach to consonance from dissonance");
                         }
                         else //New_Interval is dissonant
                                  if (abs(melodic_motion_to_) > 4){
                                   myPC.decrementRank(Decrements.bad_diss_approach_from_diss);
-                                  System.out.println(" bad approach to dissonance from dissonance");    
+                                  //DEBUG
+                                  //System.out.println(" bad approach to dissonance from dissonance");    
                                  }
                                   
                     }
                 }
                 else  {
-                    System.out.println("CP and CF start at the same time");         
+                    //DEBUG
+                    //System.out.println("CP and CF start at the same time");         
                     if (previous_interval_consonant){
-                        System.out.println("previous interval consonant");
+                        //DEBUG
+                        //System.out.println("previous interval consonant");
                         if (this_interval_consonant){
                             for (Integer consonance : consonances) {
                                 if ((cand_pitch - previous_cf_pitch)%12 == consonance) {
@@ -893,7 +963,8 @@ public class Model_1 {
 
                             if (cand_prev_cf_diss == true) {
                              myPC.decrementRank(Decrements.diss_cp_previous_cf);
-                             System.out.println("counterpoint is dissonant with previous cantus firmus");
+                             //DEBUG
+                             //System.out.println("counterpoint is dissonant with previous cantus firmus");
                             }
                                    
 
@@ -901,7 +972,8 @@ public class Model_1 {
                                 same_consonant_count++;
                                 if (same_consonant_count > same_consonant_threshold) {
                                  myPC.decrementRank(Decrements.seq_of_same_cons);
-                                 System.out.println("sequence of too many consonant interval");
+                                 //DEBUG
+                                 //System.out.println("sequence of too many consonant interval");
                                 }
                                    
                             }
@@ -913,13 +985,15 @@ public class Model_1 {
                                         if (melody_motion_to_cand > 0)
                                             if (melodic_motion_to_ >0 ) {
                                              myPC.decrementRank(Decrements.parallel_perf_consonance);
-                                             System.out.println("parallel perfect consonance");
+                                             //DEBUG
+                                             //System.out.println("parallel perfect consonance");
                                             }
                                                
                                         if (melody_motion_to_cand < 0)
                                             if (melodic_motion_to_ <0 ) {
                                             myPC.decrementRank(Decrements.parallel_perf_consonance);
-                                            System.out.println("parallel perfect consonance");
+                                            //DEBUG
+                                            //System.out.println("parallel perfect consonance");
                                             }
                                                     
                                     }
@@ -928,13 +1002,15 @@ public class Model_1 {
                                     if (melody_motion_to_cand > 0)
                                         if (melodic_motion_to_ >0 ) {
                                         myPC.decrementRank(Decrements.direct_motion_perf_cons);
-                                        System.out.println("direct motion into perfect consonance");
+                                        //DEBUG
+                                        //System.out.println("direct motion into perfect consonance");
                                         }
                                             
                                     if (melody_motion_to_cand < 0)
                                         if (melodic_motion_to_ <0 ) {
                                         myPC.decrementRank(Decrements.direct_motion_perf_cons);
-                                        System.out.println("direct motion into perfect consonance");
+                                        //DEBUG
+                                        //System.out.println("direct motion into perfect consonance");
                                         }
                                             
                                 }
@@ -943,11 +1019,13 @@ public class Model_1 {
                         }
                         else  {//New_Interval is dissonant
                             myPC.decrementRank(Decrements.motion_into_diss_both_voices_change);
-                            System.out.println("both voices move into dissonance");
+                            //DEBUG
+                            //System.out.println("both voices move into dissonance");
                         }
                     }
                     else  {//ie Previous_Interval is dissonant
-                        System.out.println("previous interval is dissonant");
+                        //DEBUG
+                        //System.out.println("previous interval is dissonant");
                         if (this_interval_consonant){
 
                             for (Integer consonance : consonances) {
@@ -958,39 +1036,46 @@ public class Model_1 {
 
                             if (cand_prev_cf_diss == true) {
                             myPC.decrementRank(Decrements.diss_cp_previous_cf);
-                            System.out.println("counterpoint dissonant with previous cf");
+                            //DEBUG
+                            //System.out.println("counterpoint dissonant with previous cf");
                             }
                                    
                             if (melody_motion_to_cand > 0)
                                 if (melodic_motion_to_ >0 ) {
                                     myPC.decrementRank(Decrements.direct_motion_perf_cons);
-                                    System.out.println("direct motion into perfect consonance");
+                                    //DEBUG
+                                    //System.out.println("direct motion into perfect consonance");
                                     }
                                             
                             if (melody_motion_to_cand < 0)
                                 if (melodic_motion_to_ <0 ) {
                                     myPC.decrementRank(Decrements.direct_motion_perf_cons);
-                                    System.out.println("direct motion into perfect consonance");
+                                    //DEBUG
+                                    //System.out.println("direct motion into perfect consonance");
                                     }
                                             
                         }
                         else { //this interval is dissonant
                             myPC.decrementRank(Decrements.motion_into_diss_both_voices_change);
                             myPC.decrementRank(Decrements.seq_of_diss);
-                            System.out.println("two dissonances in a row approached from both voices");
+                            //DEBUG
+                            //System.out.println("two dissonances in a row approached from both voices");
                             if(this_interval == previous_interval ){
                                 myPC.decrementRank(Decrements.seq_same_type_diss);
-                                System.out.println("sequence of same type of dissonance");
+                                //DEBUG
+                                //System.out.println("sequence of same type of dissonance");
                                     if (melody_motion_to_cand > 0)
                                         if (melodic_motion_to_ >0 ) {
                                         myPC.decrementRank(Decrements.direct_motion_into_diss);
-                                        System.out.println("direct motion into dissonance");
+                                        //DEBUG
+                                        //System.out.println("direct motion into dissonance");
                                         }
                                             
                                     if (melody_motion_to_cand < 0)
                                         if (melodic_motion_to_ <0 ) {
                                         myPC.decrementRank(Decrements.direct_motion_into_diss);
-                                        System.out.println("direct motion into dissonance");
+                                        //DEBUG
+                                        //System.out.println("direct motion into dissonance");
                                         }
                                             
                             }
@@ -1006,19 +1091,23 @@ public class Model_1 {
         //pick highest ranking pitch candidate -> return_me[i]
         ArrayList<PitchCandidate> pitch_winners = new ArrayList();
         for (PitchCandidate myPC : pitch_candidates){
-            System.out.println( "pitch candidate pitch: "+ myPC.getPitch() + " and rank: " + myPC.getRank() );
+            //DEBUG
+            //System.out.println( "pitch candidate pitch: "+ myPC.getPitch() + " and rank: " + myPC.getRank() );
             if (pitch_winners.isEmpty()) {
                 pitch_winners.add(myPC);
-                System.out.println("pitch_winners is empty. adding " + myPC.getPitch() + " with rank" + myPC.getRank());
+                //DEBUG
+                //System.out.println("pitch_winners is empty. adding " + myPC.getPitch() + " with rank" + myPC.getRank());
             }
             else if (myPC.getRank() > pitch_winners.get(0).getRank()) {
                      pitch_winners.clear();
                      pitch_winners.add(myPC);
-                     System.out.println("after emptying pitch_winners adding " + myPC.getPitch() +" with rank "+ myPC.getRank());
+                     //DEBUG
+                     //System.out.println("after emptying pitch_winners adding " + myPC.getPitch() +" with rank "+ myPC.getRank());
                 }
             else if (Objects.equals(myPC.getRank(), pitch_winners.get(0).getRank())) {
                 pitch_winners.add(myPC);
-                System.out.println("adding " + myPC.getPitch() + " to pitch_winners with rank " + myPC.getRank());
+                //DEBUG
+                //System.out.println("adding " + myPC.getPitch() + " to pitch_winners with rank " + myPC.getRank());
             }
             
         }
@@ -1041,7 +1130,8 @@ public class Model_1 {
             //Evaluate Pitch Candidates Against these checke
             for (PitchCandidate myPC : pitch_candidates){
                 int this_interval = abs(myPC.getPitch() - CF_note.getPitch())%12;
-                System.out.println("this interval  = " + this_interval);
+                //DEBUG
+                //System.out.println("this interval  = " + this_interval);
                 
                 //compute interval whether consonant
                 boolean this_interval_consonant = false;
@@ -1050,13 +1140,15 @@ public class Model_1 {
                     if (this_interval == consonance) this_interval_consonant = true;
                 }
                 if(this_interval_consonant) {
-                    System.out.println("this interval consonant");
+                    //DEBUG
+                    //System.out.println("this interval consonant");
                 }
                 else {
                     if (CP_note.getAccent()) {
                         //if (CP_note.getAccent() && CP_note.getStartTime() <= CF_note.getStartTime()) {
                         myPC.decrementRank(Decrements.accented_dissonance);
-                        System.out.println("dissonant accent2");
+                        //DEBUG
+                        //System.out.println("dissonant accent2");
                     }
                 }
             }

@@ -6,7 +6,7 @@
 package Hindemith.view;
 
 import Hindemith.InputParameters;
-import Hindemith.PatternPlayerSaver;
+import Hindemith.PatternStorerSaver1;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
@@ -212,7 +212,7 @@ public class FXMLDocumentController implements Initializable {
     Boolean firstRun = true;
     static Boolean runCancelled = false;
     
-    static ProgressTicker progress = new ProgressTicker();
+
     @FXML
     private AnchorPane HindemithAnchor;
     
@@ -231,8 +231,8 @@ public class FXMLDocumentController implements Initializable {
         comboboxVoice4.setValue("soprano");
         comboboxVoice5.setValue("ultra");
         checkboxVoice1.setSelected(true);
-        //checkboxVoice2.setSelected(true);
-        //checkboxVoice3.setSelected(true);
+        checkboxVoice2.setSelected(true);
+        checkboxVoice3.setSelected(true);
         
         tempoField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -241,14 +241,13 @@ public class FXMLDocumentController implements Initializable {
                 int tempo= 120;
                 try {
                     tempo = Integer.parseInt(newValue);
-                }//endd try
+                }//end try
                 catch (NumberFormatException e) {
                     tempoField.setText("120");
                 }//end catch
                     
                 if (tempo < 1 || tempo > 2000) {
                 Platform.runLater(() -> { tempoField.clear();});
-                //tempoField.setText("120")
                 }//end if block
             }//ends changed method
         });
@@ -262,14 +261,13 @@ public class FXMLDocumentController implements Initializable {
                 int pclen= 4;
                 try {
                     pclen = Integer.parseInt(newValue);
-                }//endd try
+                }//end try
                 catch (NumberFormatException e) {
                     pieceLengthField.setText("4");
                 }//end catch
                     
                 if (pclen < 1 || pclen > 2000) {
                 Platform.runLater(() -> { pieceLengthField.clear();});
-                //pieceLengthField.setText("4")
                 }//end if block
             }//ends changed method
         });
@@ -284,32 +282,17 @@ public class FXMLDocumentController implements Initializable {
         PlayButton.setVisible(true);
         PauseButton.setVisible(true);
         StopButton.setVisible(true);
-        CancelBox.show("Play Pattern?", "You chose not to play");
+        CancelBox.show("Play Pattern?", " ");
         proceed = CancelBox.getProceed();
         if (proceed) {
             PlayerBox myPlayerBox = new PlayerBox();
-            try {
-                TimeUnit.SECONDS.sleep(6);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-            Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
-            for (Thread mythread:  threadArray) {
-                String name = mythread.getName();
-                System.out.println(name);
-            }
-            
-            
-            
         }
-        CancelBox.show("Save Pattern?", "You chose not to save");
+        CancelBox.show("Save Pattern?", " ");
         proceed = CancelBox.getProceed();
         if (proceed) {
             if (InputParameters.getFilePath() == null) handleFileChooserButton();
-            PatternPlayerSaver.save_pattern();
+            PatternStorerSaver1.save_pattern();
         }
-        PatternPlayerSaver.resetPlayer();
     }
     
     @FXML
@@ -336,11 +319,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public void handleRunButton (ActionEvent event) {
         boolean proceed = true;
-//        if(Hindemith.InputParameters.getFilePath() == null){
-//            CancelBox.show("Midi will be saved with default name and location. OK?", "No file chosen");
-//            proceed = CancelBox.getProceed();
-//        }
-//        else 
+
         if (Hindemith.InputParameters.getFilePath() != null && Hindemith.InputParameters.getFilePath().isFile()) {
             CancelBox.show("File will be overwritten. OK?", "Overwrite existing file");
             proceed = CancelBox.getProceed();
@@ -447,7 +426,6 @@ public class FXMLDocumentController implements Initializable {
         fileChooserButton.setDisable(true);
         
         //Starting the counterpoint
-        //Hindemith.Model model = new Hindemith.Model();
         Hindemith.Model_1 model = new Hindemith.Model_1();
         Thread generatorThread = new Thread((Runnable) model.worker);
         generatorThread.start();
@@ -491,9 +469,7 @@ public class FXMLDocumentController implements Initializable {
             mylabel.setText("Cancelling... please wait");
             model.worker.cancel();
             model.setSTOP();
-            //generatorThread.stop();
             stage.close();
-            //System.out.println("Cancelled");
         });
         
         VBox pane = new VBox(20);
@@ -512,19 +488,5 @@ public class FXMLDocumentController implements Initializable {
             
     }// end of handleRunButtonCode
     
-    @FXML
-    public void handlePlayButton (ActionEvent event) {
-       //PatternPlayerSaver.resume_player();
-       PatternPlayerSaver.play_pattern();
-    }
-    
-    @FXML
-    public void handlePauseButton (ActionEvent event) {
-        PatternPlayerSaver.pause_player();
-    }
-
-    @FXML
-    public void handleStopButton (ActionEvent event) {
-        PatternPlayerSaver.stop_player();
-    }    
+  
 }//end of FXMLDocumentController class

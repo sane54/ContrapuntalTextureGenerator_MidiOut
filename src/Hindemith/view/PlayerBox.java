@@ -10,7 +10,8 @@ package Hindemith.view;
  * @author alyssa
  */
 
-import Hindemith.PatternPlayerSaver;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.*;
@@ -18,12 +19,16 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
+import org.jfugue.Pattern;
+import org.jfugue.Player;
 
 
 
 
 public class PlayerBox {
     private final Stage jwstage = new Stage();
+    static Player pps_player = new Player();
+    static Pattern pattern_to_play;
     
     public PlayerBox() {
         nowshow ("Now Playing", "Pattern Player", jwstage);
@@ -31,47 +36,22 @@ public class PlayerBox {
     
     private  void nowshow (String message, String title, Stage stage) {
         
-        Hindemith.PlayerThread myPlayerStarter = new Hindemith.PlayerThread("resume");
-        Thread PlayerStartThread = new Thread((Runnable) myPlayerStarter.worker);
-        PlayerStartThread.setDaemon(false);
-        PlayerStartThread.start();
         
-        Hindemith.PlayerThread myPlayerPauser = new Hindemith.PlayerThread("pause");
-        Thread PlayerPauseThread = new Thread((Runnable) myPlayerPauser.worker);
+        LauncherThread starter_thread = new LauncherThread();
+        Thread PlayerStarterThread = new Thread((Runnable) starter_thread.worker);
+        PlayerStarterThread.start();
+        pattern_to_play  = Hindemith.PatternStorerSaver1.get_pattern();
         
-        Hindemith.PlayerThread myPlayerResumer = new Hindemith.PlayerThread("resume");
-        Thread PlayerResumeThread = new Thread((Runnable) myPlayerResumer.worker);
-
-        Hindemith.PlayerThread myPlayerStopper = new Hindemith.PlayerThread("stop");
-        Thread PlayerStopThread = new Thread((Runnable) myPlayerStopper.worker);        
+       
         
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle(title);
         stage.setMinWidth(450);
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
-                System.out.println("Stage is closing");
-            if (PlayerStartThread.isAlive()) {
-                System.out.println("about to stop player " + PlayerStartThread.getName() );
-                PatternPlayerSaver.stop_player();
-                //System.out.println("Starter Worker is still alive Closing Player Starter Worker");
-                //PlayerStopThread.start();
-                //myPlayerStarter.worker.cancel();
-                //PlayerStartThread.interrupt();
-                //if (PlayerStartThread.isInterrupted()) System.out.println("Did interrupt thread");
-                //if (PlayerStartThread.isAlive())System.out.println("Cancel didn't work - thread still alive");
-
-            }
-            else System.out.println("Start thread is dead");
-            if (PlayerResumeThread.isAlive()) PlayerResumeThread.stop();
-            else System.out.println("Resume thread is dead");
-            if (PlayerPauseThread.isAlive()) PlayerPauseThread.stop();
-            else System.out.println("Pause thread is dead");
-            if (PlayerStopThread.isAlive()) PlayerStopThread.stop();
-            else System.out.println("Stop thread is dead");
-            if (PlayerStartThread.isAlive()) System.out.println("start thread is still alive....still");
-            else System.out.println("start thread is dead");
-            
+                if (pps_player.isPlaying()) {
+                    pps_player.stop();
+                }
             }
         });  
         
@@ -84,32 +64,26 @@ public class PlayerBox {
         btnPause.setText("Pause");
         btnPause.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-//            Hindemith.PlayerThread myPlayerPauser = new Hindemith.PlayerThread("pause");
-//            Thread PlayerPauseThread = new Thread((Runnable) myPlayerPauser.worker);    
-            PlayerPauseThread.start();
-            myPlayerStarter.worker.cancel();
+            if (pps_player.isPlaying()) pps_player.pause();
             }
         });
         
         Button btnPlay = new Button("Play");
         btnPlay.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-//            Hindemith.PlayerThread myPlayerResumer = new Hindemith.PlayerThread("resume");
-//            Thread PlayerResumeThread = new Thread((Runnable) myPlayerResumer.worker);
-            PlayerResumeThread.start();
+                if (!pps_player.isPlaying()) {
+                    LauncherThread resume_thread = new LauncherThread();
+                    Thread PlayerResumeThread = new Thread((Runnable) resume_thread.worker);
+                    PlayerResumeThread.start();   
+                }
+
             }
         });
         
         Button btnStop = new Button("Stop");
         btnStop.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-//            Hindemith.PlayerThread myPlayerStopper = new Hindemith.PlayerThread("stop");
-//            Thread PlayerStopThread = new Thread((Runnable) myPlayerStopper.worker); 
-            PlayerStopThread.start();
-//            
-//
-
-                stage.close();
+            if (pps_player.isPlaying())pps_player.stop();
             }
         });
         
@@ -120,10 +94,36 @@ public class PlayerBox {
         
         Scene jwscene = new Scene(pane);
         stage.setScene(jwscene);
-        System.out.println("about to show and wait stage");
+        //DEBUG
+        //System.out.println("about to show and wait stage");
         stage.showAndWait();
 
     }
     
+    public class LauncherThread {
+        public Worker worker;
+        boolean resume = false;
+        String playerstate;
     
+        public  LauncherThread() {
+            worker = new Task<String>() {
+                @Override
+                protected String call() throws Exception {
+                    if (pps_player.isPaused()) {
+                        pps_player.resume();
+                    }
+                    else {
+                        pps_player.play(pattern_to_play);
+                    }
+
+                    while (true) {
+                        if (!pps_player.isPlaying()) {
+                            break;
+                        }
+                    }
+                    return "done";
+                }
+            };
+        }
+    }
 }
