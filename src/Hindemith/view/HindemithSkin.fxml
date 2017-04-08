@@ -80,6 +80,7 @@
                 <CheckBox fx:id="cons_oct_chk" layoutX="292.0" layoutY="210.0" mnemonicParsing="false" selected="true" text="oct" />
                 <CheckBox fx:id="pcons_oct_chk" layoutX="378.0" layoutY="210.0" mnemonicParsing="false" selected="true" text="oct" />
                 <CheckBox fx:id="midi_out_chk" layoutX="57.0" layoutY="146.0" mnemonicParsing="false" text="Midi Out Via Midi Yoke" />
+                <CheckBox fx:id="q_mode_chk" layoutX="57.0" layoutY="166.0" mnemonicParsing="false" text="Queue Mode" />
               </children>
             </AnchorPane>
           </content>

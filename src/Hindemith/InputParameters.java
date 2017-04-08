@@ -25,6 +25,7 @@ import java.io.File;
  */
 public class InputParameters {
 static Boolean out_to_midi_yoke = false;
+static Boolean q_mode = false;
 static Integer [] consonances = {0, 3, 4, 7, 8, 9};
 static Integer [] perfect_consonances = {0, 7};
 static Integer [] root_consonances = {0, 3, 4, 7};
@@ -46,7 +47,13 @@ public static void set_out_to_midi_yoke (Boolean out2yoke) {
     out_to_midi_yoke = out2yoke;
 }
 
+public static void set_q_mode (Boolean queue_mode) {
+    q_mode = queue_mode;
+}
 
+public static Boolean get_q_mode() {
+    return q_mode;
+}
 
 public static void setLargeDissonanceBad(boolean is_bad){
     large_dissonance_bad = is_bad;

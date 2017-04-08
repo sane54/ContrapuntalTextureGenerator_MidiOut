@@ -19,13 +19,17 @@ public class PatternStorerSaver1 {
     static Pattern music_output;
     
     public static void add_pattern (Pattern my_pattern) {
-        music_output = my_pattern;
+        if (music_output == null) music_output = my_pattern;
+        else music_output.add(my_pattern);
     }
     
     public static Pattern get_pattern() {
         return music_output;
     }
-            
+    
+    public static void clear_pattern() {
+        music_output = null;
+    }
     
 
     

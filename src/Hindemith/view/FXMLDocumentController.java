@@ -200,7 +200,10 @@ public class FXMLDocumentController implements Initializable {
     ChoiceBox choiceboxDissOK = new ChoiceBox();
     
     @FXML
-    CheckBox midi_out_chk = new CheckBox(); 
+    CheckBox midi_out_chk = new CheckBox();
+    
+    @FXML
+    CheckBox q_mode_chk = new CheckBox(); 
     
     Stage ctrlStage = new Stage(); //Do i need this?
     String filePath = new String(); //Do i need this?
@@ -219,9 +222,7 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        PlayButton.setVisible(false);
-        PauseButton.setVisible(false);
-        StopButton.setVisible(false);
+
         modeModuleComboBox.setValue("Lydian");
         rhythmModuleComboBox.setValue("Drum and Bass Patterns 1");
         choiceboxDissOK.setValue("No");
@@ -282,16 +283,23 @@ public class FXMLDocumentController implements Initializable {
         PlayButton.setVisible(true);
         PauseButton.setVisible(true);
         StopButton.setVisible(true);
-        CancelBox.show("Play Pattern?", " ");
+        String pattern_or_queue = "Pattern?";
+        if (Hindemith.InputParameters.get_q_mode() == true) {
+            pattern_or_queue = "Queue?";
+        }
+        CancelBox.show("Play " + pattern_or_queue, " ");
         proceed = CancelBox.getProceed();
         if (proceed) {
             PlayerBox myPlayerBox = new PlayerBox();
         }
-        CancelBox.show("Save Pattern?", " ");
+        CancelBox.show("Save " + pattern_or_queue, " ");
         proceed = CancelBox.getProceed();
         if (proceed) {
             if (InputParameters.getFilePath() == null) handleFileChooserButton();
             PatternStorerSaver1.save_pattern();
+        }
+        if (Hindemith.InputParameters.get_q_mode() == false) {
+            PatternStorerSaver1.clear_pattern();
         }
     }
     
@@ -391,6 +399,8 @@ public class FXMLDocumentController implements Initializable {
         if(choiceboxDissOK.getValue() == "Yes") Hindemith.InputParameters.setLargeDissonanceBad(true);
         if(choiceboxDissOK.getValue() == "No")  Hindemith.InputParameters.setLargeDissonanceBad(false);
         if(midi_out_chk.isSelected()) Hindemith.InputParameters.set_out_to_midi_yoke(true);
+        if(q_mode_chk.isSelected()) Hindemith.InputParameters.set_q_mode(true);
+        
         
         Hindemith.Decrements.setAccented_Dissonance((int)AccentDSlider.getValue());
         Hindemith.Decrements.setBad_Cons_Approach_From_Diss((int)BadApproachCfromDSlider.getValue());

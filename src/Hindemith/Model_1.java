@@ -194,7 +194,7 @@ public class Model_1 {
                     resetParams();
                     return "cancelled";
                 }
-                music_output.add(" Rw Rw");
+                //music_output.add(" Rw");
             }// end create a jfugue musicstring from the built voice loop
             
             if (isCancelled()) {
