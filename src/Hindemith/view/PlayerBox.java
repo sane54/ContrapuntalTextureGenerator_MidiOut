@@ -161,9 +161,6 @@ public class PlayerBox {
         }
     }
     public class jplayer extends Player {
-//        public  jplayer () throws MidiUnavailableException{
-//            this(jplayer.getSequencerConnectedToDevice(MidiOut.device));
-//        }
         public Sequencer getSequencerConnectedToDevice(DeviceThatWillReceiveMidi device) throws MidiUnavailableException{
             Sequencer sequencer = MidiSystem.getSequencer(false); // Get Sequencer which is not connected to new Synthesizer.
             sequencer.open();
