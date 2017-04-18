@@ -54,6 +54,7 @@ public class PatternStorerSaver1 {
                 
                 }
             } 
+            InputParameters.setFilePath(null);
     }
    
     public static void resetPlayer() {

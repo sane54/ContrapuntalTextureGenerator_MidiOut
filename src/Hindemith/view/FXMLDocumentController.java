@@ -10,7 +10,9 @@ import Hindemith.PatternStorerSaver1;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
@@ -310,7 +312,14 @@ public class FXMLDocumentController implements Initializable {
 
         }
         else {
+            Date today = new Date(System.currentTimeMillis());
+            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd-yyyy-HH-mm");
+            String dateString = DATE_FORMAT.format(today);
+            int tempo_bpm = InputParameters.getTempo();
             final FileChooser fileChooser = new FileChooser();
+            File dirLoc = new File ("C:\\Users\\Owner\\Desktop\\Species Midi");
+            fileChooser.setInitialDirectory(dirLoc);
+            fileChooser.setInitialFileName(tempo_bpm + "-" + dateString);
             fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("MIDI", "*.mid"), 
                 new FileChooser.ExtensionFilter("ALL", "*.*")    
@@ -398,7 +407,10 @@ public class FXMLDocumentController implements Initializable {
         
         if(choiceboxDissOK.getValue() == "Yes") Hindemith.InputParameters.setLargeDissonanceBad(true);
         if(choiceboxDissOK.getValue() == "No")  Hindemith.InputParameters.setLargeDissonanceBad(false);
-        if(midi_out_chk.isSelected()) Hindemith.InputParameters.set_out_to_midi_yoke(true);
+        if(midi_out_chk.isSelected()) {
+            Hindemith.InputParameters.set_out_to_midi_yoke(true);
+        }
+        else Hindemith.InputParameters.set_out_to_midi_yoke(false);
         if(q_mode_chk.isSelected()) Hindemith.InputParameters.set_q_mode(true);
         
         

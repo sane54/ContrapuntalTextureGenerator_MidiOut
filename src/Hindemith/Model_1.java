@@ -6,11 +6,6 @@
 package Hindemith;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiSystem;
-import org.jfugue.DeviceThatWillReceiveMidi;
-import javax.sound.midi.MidiUnavailableException;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import Hindemith.RhythmModule.*;
@@ -22,10 +17,7 @@ import java.util.Objects;
 import java.util.logging.Logger; //the Java Logger
 import java.util.Random;
 import org.jfugue.*;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 
 
@@ -194,7 +186,7 @@ public class Model_1 {
                     resetParams();
                     return "cancelled";
                 }
-                //music_output.add(" Rw");
+                music_output.add(" Rh"); //so midi doesn't hang
             }// end create a jfugue musicstring from the built voice loop
             
             if (isCancelled()) {

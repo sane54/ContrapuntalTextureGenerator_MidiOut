@@ -10,24 +10,30 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import org.jfugue.DeviceThatWillReceiveMidi;
 import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Synthesizer;
+
+import org.jfugue.Player;
 
 
 /**
  *
  * @author alyssa
  */
-public class MidiOut {
+public class SynthOut {
     public static DeviceThatWillReceiveMidi device = null;
+    public static Synthesizer synth;
+    
     
     public static void setDevice () {
         MidiDevice.Info[] devices = MidiSystem.getMidiDeviceInfo();
         for (int i=0;i<devices.length;i++) {
             System.out.println("name: " + devices[i].getName() + "    Description: " + devices[i].getDescription());
             if (devices[i].getName().equals("Out To MIDI Yoke:  1") || devices[i].getName().startsWith("loopMIDI") ) {
-                System.out.println("found midi port");
                 try {
                     device = new DeviceThatWillReceiveMidi(devices[i]);
-                    System.out.println("Assigned Midi Port");
+                    MidiDevice mydevice = MidiSystem.getMidiDevice(devices[i]);
+                    synth = MidiSystem.getSynthesizer();
+                    //System.out.println("Assigned Midi Yoke");
                 } 
                 catch (MidiUnavailableException e) {
                 }  

@@ -10,6 +10,10 @@ package Hindemith.view;
  * @author alyssa
  */
 
+import Hindemith.InputParameters;
+import Hindemith.MidiOut;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
@@ -19,6 +23,11 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
+import org.jfugue.DeviceThatWillReceiveMidi;
 import org.jfugue.Pattern;
 import org.jfugue.Player;
 
@@ -27,20 +36,46 @@ import org.jfugue.Player;
 
 public class PlayerBox {
     private final Stage jwstage = new Stage();
-    static Player pps_player = new Player();
+    static Player pps_player;
     static Pattern pattern_to_play;
+    static Sequencer mysequencer;
     
     public PlayerBox() {
-        nowshow ("Now Playing", "Pattern Player", jwstage);
-    }
+        nowshow ("Now Playing", "Pattern Player", jwstage);   
+     }
     
-    private  void nowshow (String message, String title, Stage stage) {
-        
-        
+    private void nowshow (String message, String title, Stage stage) {
+        boolean usedefault = true;
+        pattern_to_play  = Hindemith.PatternStorerSaver1.get_pattern();
+        if (InputParameters.get_out_to_midi_yoke())  {
+            MidiOut.setDevice();
+            if (MidiOut.device != null) {
+//                Sequence music_sequence = pps_player.getSequence(pattern_to_play);
+//                MidiOut.device.sendSequence(music_sequence);
+                jplayer myjplayer = new jplayer();
+                try {
+                    Sequencer myseq = myjplayer.getSequencerConnectedToDevice(MidiOut.device);
+                   pps_player = new Player(myseq);
+                   usedefault = false;
+                } catch (MidiUnavailableException ex) {
+                }
+            }
+            else {
+                InputParameters.set_out_to_midi_yoke(false);
+                MessageBox.show( "No Midi Output", "Using default midi sounds");
+                usedefault = true;
+            }
+           
+            
+        }
+        if (usedefault) pps_player = new Player();
+            
         LauncherThread starter_thread = new LauncherThread();
         Thread PlayerStarterThread = new Thread((Runnable) starter_thread.worker);
         PlayerStarterThread.start();
-        pattern_to_play  = Hindemith.PatternStorerSaver1.get_pattern();
+        
+
+        
         
        
         
@@ -97,7 +132,6 @@ public class PlayerBox {
         //DEBUG
         //System.out.println("about to show and wait stage");
         stage.showAndWait();
-
     }
     
     public class LauncherThread {
@@ -126,4 +160,17 @@ public class PlayerBox {
             };
         }
     }
+    public class jplayer extends Player {
+//        public  jplayer () throws MidiUnavailableException{
+//            this(jplayer.getSequencerConnectedToDevice(MidiOut.device));
+//        }
+        public Sequencer getSequencerConnectedToDevice(DeviceThatWillReceiveMidi device) throws MidiUnavailableException{
+            Sequencer sequencer = MidiSystem.getSequencer(false); // Get Sequencer which is not connected to new Synthesizer.
+            sequencer.open();
+            sequencer.getTransmitter().setReceiver(device.getReceiver()); // Connect the Synthesizer to our synthesizer instance.
+            return sequencer;
+        }
+    }
+        
+    
 }
