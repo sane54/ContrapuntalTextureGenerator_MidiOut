@@ -1,29 +1,34 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package Hindemith;
 
 import org.jfugue.*;
 import java.util.ArrayList;
 /**
- *
- * @author alyssa
+* Marks accents in a jfugue music string produced by a Rhythm module
+* Accents are evaluated slightly in hindsight or retrograde since a note 
+* can only been analyzed for accented-ness once it has ended, ie when the 
+* parser detects another note. Most notes are added to the output with their
+* accented status in limbo. The exception is the first accented note of the pattern
+* which is added to the output with its accented status turned on. 
+* 
+* The output is an array of "melodic notes" which differ from Jfugue notes in that they
+* have an accent value and also record the time elapsed up until that point.
+* @author J.Witzgall Trick's Music Boxes
  */
 public class AccentListener implements ParserListener{
- /*
-    Marks accents in a jfugue music string produced by a Rhythm module
-    Accents are evaluated slightly in hindsight or retrograde since a note 
-    can only been analyzed for accented-ness once it has ended, ie when the 
-    parser detects another note. Most notes are added to the output with their
-    accented status in limbo. The exception is the first accented note of the pattern
-    which is added to the output with its accented status turned on. 
-    
-    The output is an array of melodic notes which differ from Jfugue notes in that they
-    have an accent value and also record the time elapsed up until that point. 
-    
-    */
     Double duration_tally = 0.00; //time as a division of a whole note up to this point
     //Double previous_duration = 0.00; Not used
     ArrayList<MelodicNote> melody_note_array = new ArrayList();
@@ -36,6 +41,12 @@ public class AccentListener implements ParserListener{
     boolean syncopate = false; //A flag to determine if a beat is held over
     int prior_index = 0; //Index in melodic_note_array of the prior to pending note
     
+    /**
+     * Listens to a generated rhythm pattern and outputs Melodic Notes with 
+     * unassigned pitches
+     * @param p a pattern
+     * @return an ArrayList of Melodic Notes
+     */
     public ArrayList<MelodicNote> listen(Pattern p) {
         parser.addParserListener(this);
         //DEBUG
@@ -48,7 +59,7 @@ public class AccentListener implements ParserListener{
         }
         //DEBUG
         //System.out.println("accentlistener returning array");
-        printArray(melody_note_array);
+        //printArray(melody_note_array);
         return melody_note_array;
     }
 
@@ -96,7 +107,10 @@ public class AccentListener implements ParserListener{
     
     public void pitchBendEvent(PitchBend pitchBend){
 	}
-
+    /**
+     * Upon detecting a note, run getAccent on that note.
+     * @param note 
+     */
     
     @Override
     public void noteEvent(Note note){
@@ -112,7 +126,13 @@ public class AccentListener implements ParserListener{
     
     public void parallelNoteEvent(Note note){
 	}
-	
+    
+    /**
+     * Determines whether a given note has an accent and sets the accent value
+     * of a corresponding melodic note in a melodic voice. 
+     * @param note
+     * @param duration 
+     */
     public void getAccent(Note note, double duration ) {
 
         Boolean accented = false; //only used for first accent in pattern
@@ -228,7 +248,7 @@ public class AccentListener implements ParserListener{
         pattern_index++;
     }   
     
-    public void printArray(ArrayList<MelodicNote> melody_note_array ) {
+    private void printArray(ArrayList<MelodicNote> melody_note_array ) {
         
              
         for(MelodicNote m_note : melody_note_array) {
@@ -237,8 +257,7 @@ public class AccentListener implements ParserListener{
             if(m_note.getRest() == false) pitch_string = "P";
             if(m_note.getAccent()== false) acc_string = "N";
             if(m_note.getAccent()== true) acc_string = "A";
-            //DEBUG
-            //System.out.print( acc_string+ pitch_string + m_note.getDuration());
+            System.out.print( acc_string+ pitch_string + m_note.getDuration());
             
         }
     }

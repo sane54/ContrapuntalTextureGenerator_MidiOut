@@ -1,7 +1,16 @@
  /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package Hindemith;
 
@@ -22,8 +31,10 @@ import org.jfugue.*;
 
 
 /**
- *
- * @author alyssa
+ * This is the class that creates counterpoint from rhythm patterns and melodic
+ * rules. It is always called in a thread so that it may be canceled by the 
+ * user. 
+ * @author Trick's Music Boxes
  */
 public class Model_1 {
     public Worker worker;
@@ -48,9 +59,25 @@ public class Model_1 {
     static Boolean harmonic_prog_built = false;
     static MelodicNote this_key = new MelodicNote();
     private static boolean stopper = false;
-    
+
     public  Model_1() {
         worker = new Task<String>() {
+     /**
+     * The call method here provides the flow of the music composition
+     * It runs the user-specified rhythm module to get a collection of 
+     * patterns, each of which consists solely of note durations. It then runs
+     * AccentListener to determine the accent of each note based on rhythmic 
+     * placement. Now we have a collection of note durations with accents. Now, 
+     * each pattern will be sent to BuildVoicePitches which assigns pitches 
+     * based on melodic rules but also on harmonic rules and the pitch content of
+     * the previously built voices. Now we have a collection of patterns of 
+     * pitches plus durations. These however must now be converted into JFugue 
+     * notes so that we can leverage JFugue's capabilities for playing and saving
+     * these note patterns as MIDI. When this is done, the patterns are merged
+     * into one large JFugue pattern, each pattern now a voice in the 
+     * larger pattern. This pattern is stored in the PatternStorerSaver1 class
+     * as a static variable. 
+     */
         @Override
         protected String call() throws Exception {
             resetParams();
@@ -210,7 +237,23 @@ public class Model_1 {
     };
         
     }
-    
+    /**
+     * Assigns pitches to a melodic voice without pitches. Contains the main
+     * logic of abstract counterpoint algorithm. The algorithm proceeds note by 
+     * note. Candidates for each note's  pitch are returned from the mode module. 
+     * are evaluated harmonically and melodically against pitches in notes 
+     * which occur simultaneously in previously built melodic voices, and 
+     * against pitches already assigned in this melodic voice. Each candidate is
+     * decremented when it violates a contrapuntal practice in terms of harmony 
+     * or of melody. The candidate with the least decremented value is chosen
+     * for the note. The algorithm then moves to the next note in the melodic 
+     * voice.
+     * 
+     * @param alter_me a melodic voice containing note durations without pitch
+     * @param number_of_voices 
+     * @param my_mode_module the mode module specified by the user
+     * @return a melodic voice with pitches assigned to the note durations
+     */
     public static MelodicVoice buildVoicePitches (MelodicVoice alter_me, int number_of_voices, ModeModule my_mode_module){
         MelodicVoice return_me = new MelodicVoice();
         ArrayList<LinkedList> built_voice_queues = new ArrayList();
@@ -632,7 +675,20 @@ public class Model_1 {
         return count;
         }
     }
-    
+    /**
+     * Given a set of possible candidates for a note's pitch along with key,
+     * surrounding notes, and state of the melodic curve, determine decrements
+     * for each candidate. 
+     * @param pitch_candidates
+     * @param my_mode_module
+     * @param alter_me
+     * @param pitch_center
+     * @param voice_pitch_count
+     * @param previous_cp_pitch
+     * @param previous_melodic_interval
+     * @param is_accent
+     * @return 
+     */
     public static ArrayList<PitchCandidate>  melodicCheck(ArrayList<PitchCandidate> pitch_candidates, ModeModule my_mode_module, MelodicVoice alter_me, 
                              Integer pitch_center, int voice_pitch_count, Integer previous_cp_pitch, Integer previous_melodic_interval, Boolean is_accent) {
         Boolean large_dissonance_bad = InputParameters.large_dissonance_bad;
@@ -797,7 +853,19 @@ public class Model_1 {
         } //next pitch candidate
         return pitch_candidates; 
     }
-    
+    /**
+     * Similar to melodicChecks however in these method we are interested in 
+     * harmonic properties of the pitch candidates relative to pitches in voices
+     * that have already been built. 
+     * @param pitch_candidates
+     * @param CF_note
+     * @param CFnoteRoot
+     * @param previous_cf_pitch
+     * @param previous_cp_pitch
+     * @param CP_note
+     * @param voice_pitch_count
+     * @return 
+     */
     public static ArrayList<PitchCandidate> harmonicChecks(ArrayList<PitchCandidate> pitch_candidates, MelodicNote CF_note, Boolean CFnoteRoot, Integer previous_cf_pitch,
                                                         Integer previous_cp_pitch, MelodicNote CP_note, int voice_pitch_count ){
             Boolean large_dissonance_bad = InputParameters.large_dissonance_bad;
@@ -1078,7 +1146,12 @@ public class Model_1 {
             }
         return pitch_candidates;
     }
-    
+   
+    /**
+     * Picks the pitch candidate that will be the pitch of the note. 
+     * @param pitch_candidates
+     * @return 
+     */
     public static Integer pickWinner(ArrayList<PitchCandidate> pitch_candidates){
         //pick highest ranking pitch candidate -> return_me[i]
         ArrayList<PitchCandidate> pitch_winners = new ArrayList();
@@ -1109,6 +1182,14 @@ public class Model_1 {
         pitch_winners.clear();
         return cp_winner;
     }
+    /**
+     * Another harmonicCheck method for first and last pitches in a voice. 
+     * @param pitch_candidates
+     * @param CF_note
+     * @param CFnoteRoot
+     * @param CP_note
+     * @return 
+     */
     public static ArrayList<PitchCandidate> harmonicChecksSuperBasic(ArrayList<PitchCandidate> pitch_candidates, MelodicNote CF_note, Boolean CFnoteRoot,
                                                         MelodicNote CP_note){
         Boolean large_dissonance_bad = InputParameters.large_dissonance_bad;
@@ -1146,7 +1227,9 @@ public class Model_1 {
             }
         return pitch_candidates;
     }
-    
+    /**
+     * Helper for canceling while in BuildVoicePitches
+     */
     public void setSTOP(){
         stopper = true;
     }

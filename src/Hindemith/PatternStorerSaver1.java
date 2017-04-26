@@ -1,7 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package Hindemith;
 
@@ -11,9 +20,16 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.jfugue.*;
+import Hindemith.view.MessageBox;
 
 
-
+/**
+ * This class stores and provides access to a JFugue pattern which is the 
+ * output of the Model1 class, the class that actually composes the music. 
+ * It is accessed by view classes who will get the pattern in order to play the
+ * music composed by Model1. It also contains  a method for saving the pattern. 
+ * @author Trick's Music Boxes
+ */
 public class PatternStorerSaver1 {
     static Player pps_player = new Player();
     static Pattern music_output;
@@ -33,7 +49,11 @@ public class PatternStorerSaver1 {
     
 
     
-    
+    /**
+     * File location is specified in InputParameters class. Leverages the 
+     * JFugue Player class to save the pattern to a file. Default name is a 
+     * simple date string.
+     */
     public static void save_pattern() {
              //save the pattern
             Date today = new Date(System.currentTimeMillis());
@@ -43,7 +63,8 @@ public class PatternStorerSaver1 {
                 try {
                 pps_player.saveMidi(music_output, InputParameters.filePath);
                 }
-                catch (IOException ex) { 
+                catch (IOException ex) {
+                    MessageBox.show("couldn't save pattern in file location", "fail");
                 }
             }    
             else {
@@ -51,7 +72,7 @@ public class PatternStorerSaver1 {
                     pps_player.saveMidi(music_output, new File(tempo_bpm + "-" + dateString + ".mid"));
                 }
                 catch (IOException ex2) {
-                
+                MessageBox.show("couldn't save pattern in file location", "fail");
                 }
             } 
             InputParameters.setFilePath(null);

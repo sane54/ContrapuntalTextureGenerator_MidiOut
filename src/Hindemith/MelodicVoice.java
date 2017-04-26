@@ -1,7 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package Hindemith;
 
@@ -9,8 +18,11 @@ import java.util.ArrayList;
 
 
 /**
- *
- * @author alyssa
+ * A melodic voice is an array of melodic notes with some additional properties. 
+ * A voice has an upper and lower bound, in order to simulate the classic vocal 
+ * ranges. Also the pitches of the notes in the voice must be clustered around 
+ * a pitch center and not deviate too much from the center. 
+ * @author Trick's Music Boxes
  */
 public class MelodicVoice {
     private ArrayList<MelodicNote> note_arraylist = new ArrayList();
@@ -20,14 +32,18 @@ public class MelodicVoice {
     private int range_max;
     private int pitch_center;
 
-
+    /**
+     * Takes a string designating a voice range as input and sets the upper and 
+     * lower bounds accordingly.
+     * @param input_range_id bass, tenor, alto, soprano, ultra
+     */
     public void setRange (String input_range_id) {
         
         if ("bass".equals(input_range_id)) range_id = VoiceRange.bass;
-if ("tenor".equals(input_range_id)) range_id = VoiceRange.tenor;
-if ("alto".equals(input_range_id)) range_id = VoiceRange.alto;
-if ("soprano".equals(input_range_id)) range_id = VoiceRange.soprano;
-if ("ultra".equals(input_range_id)) range_id = VoiceRange.ultra;
+        if ("tenor".equals(input_range_id)) range_id = VoiceRange.tenor;
+        if ("alto".equals(input_range_id)) range_id = VoiceRange.alto;
+        if ("soprano".equals(input_range_id)) range_id = VoiceRange.soprano;
+        if ("ultra".equals(input_range_id)) range_id = VoiceRange.ultra;
         
         
         if (range_id == VoiceRange.bass) {
