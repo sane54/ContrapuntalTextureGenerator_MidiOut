@@ -15,8 +15,11 @@
 package Hindemith.view;
 
 /**
- *
- * @author alyssa
+ * Starts a separate thread to play a pattern or queue of patterns stored in 
+ * PatternStorerSaver1, then shows a screen of controls for that thread. If the 
+ * program is sending to a MidiPort, the thread can't be restarted after starting
+ * it. 
+ * @author Trick's Music Boxes
  */
 
 import Hindemith.InputParameters;
@@ -52,7 +55,13 @@ public class PlayerBox {
     public PlayerBox() {
         nowshow ("Now Playing", "Pattern Player", jwstage);   
      }
-    
+    /**
+     * Launches the player thread and builds a stage with controls for that 
+     * thread. 
+     * @param message
+     * @param title
+     * @param stage 
+     */
     private void nowshow (String message, String title, Stage stage) {
         boolean usedefault = true;
         pattern_to_play  = Hindemith.PatternStorerSaver1.get_pattern();
@@ -142,12 +151,13 @@ public class PlayerBox {
         //System.out.println("about to show and wait stage");
         stage.showAndWait();
     }
-    
+    /**
+     * The launcher for the player thread. 
+     */
     public class LauncherThread {
         public Worker worker;
         boolean resume = false;
         String playerstate;
-    
         public  LauncherThread() {
             worker = new Task<String>() {
                 @Override
@@ -169,6 +179,10 @@ public class PlayerBox {
             };
         }
     }
+    /**
+     * Solely used to connect the Java Midi sequencer to a port rather than a 
+     * synthesizer. 
+     */
     public class jplayer extends Player {
         public Sequencer getSequencerConnectedToDevice(DeviceThatWillReceiveMidi device) throws MidiUnavailableException{
             Sequencer sequencer = MidiSystem.getSequencer(false); // Get Sequencer which is not connected to new Synthesizer.

@@ -45,9 +45,9 @@ public class Decrements {
     static int seq_same_type_cons = 2;
     static int bad_diss_approach_from_diss = 1;
     static int diss_prev_cp_next_cf_unresolved = 1;
-    static int is_not_tonic = 1;
+    static int is_not_tonic = 0;
     static int direct_motion_into_diss = 1;
-    static int dissonant_with_root = 0;
+    static int dissonant_with_root = 1;
     static int minor_9th = 100;
     static int octave = 10;
     

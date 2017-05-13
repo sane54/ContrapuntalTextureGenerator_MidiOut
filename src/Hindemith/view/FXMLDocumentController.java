@@ -54,8 +54,9 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- *
- * @author alyssa
+ * Controller for the HindemithSkin fxml document
+ * Contains methods for Run and File Chooser button and for the play/save dialog
+ * @author Trick's Music Boxes
  */
 public class FXMLDocumentController implements Initializable {
     
@@ -341,7 +342,12 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
-    
+    /**
+     * Copies values specified in fxml form to input parameters class
+     * Starts Model_1 in a separate thread, and displays progress and a cancel 
+     * option. When Model_1 has finished running, show Play/Save dialog.
+     * @param event 
+     */
     @FXML
     public void handleRunButton (ActionEvent event) {
         boolean proceed = true;
@@ -421,7 +427,7 @@ public class FXMLDocumentController implements Initializable {
         }
         else Hindemith.InputParameters.set_out_to_midi_yoke(false);
         if(q_mode_chk.isSelected()) Hindemith.InputParameters.set_q_mode(true);
-        
+        else Hindemith.InputParameters.set_q_mode(false);
         
         Hindemith.Decrements.setAccented_Dissonance((int)AccentDSlider.getValue());
         Hindemith.Decrements.setBad_Cons_Approach_From_Diss((int)BadApproachCfromDSlider.getValue());

@@ -273,11 +273,11 @@ static {
     }
     
     public Double getMelodicMotionProbability (Integer input_current_pitch_cand, Integer input_previous_pitch, Integer key_transpose) {
-        input_previous_pitch = input_previous_pitch - key_transpose;
+        //input_previous_pitch = input_previous_pitch - key_transpose;
         if (input_previous_pitch < 0) input_previous_pitch += 12;
         Integer difference = input_current_pitch_cand - input_previous_pitch;
         Double motion_probability = 0.00;
-        Integer p_class = input_previous_pitch % 12;
+        Integer p_class = (input_previous_pitch - key_transpose) % 12;
         //DEBUG
         //System.out.println("getting probability for " + difference + "steps from " + p_class);
         switch ( p_class ){

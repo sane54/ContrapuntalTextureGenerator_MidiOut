@@ -16,7 +16,7 @@ package Hindemith.view;
 
 /**
  *
- * @author alyssa
+ * @author Trick's Music Boxes
  */
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

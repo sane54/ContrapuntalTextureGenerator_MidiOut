@@ -431,32 +431,48 @@ static {
     }
     
     public Double getMelodicMotionProbability (Integer input_current_pitch_cand, Integer input_previous_pitch, Integer key_transpose) {
-        input_previous_pitch = input_previous_pitch - key_transpose;
+        //input_previous_pitch = input_previous_pitch - key_transpose;
         if (input_previous_pitch < 0) input_previous_pitch += 12;
         Integer difference = input_current_pitch_cand - input_previous_pitch;
         Double motion_probability = 0.00;
-        Integer p_class = input_previous_pitch % 12;
+        Integer p_class = (input_previous_pitch - key_transpose) % 12;
         System.out.println("getting probability for " + difference + "steps from " + p_class);
         switch ( p_class ){
             case (0):
                 motion_probability = step_probability_0.get(difference);
                 System.out.println(step_probability_0.get(difference));
                 break;
+            case (1):
+                motion_probability = step_probability_1.get(difference);
+                System.out.println(step_probability_1.get(difference));
+                break;
             case (2):
                 motion_probability = step_probability_2.get(difference);
                 System.out.println(step_probability_2.get(difference));
                 break;
+            case (3):
+                motion_probability = step_probability_3.get(difference);
+                System.out.println(step_probability_3.get(difference));
+                break;
             case (4):
-                motion_probability = step_probability_7.get(difference);
+                motion_probability = step_probability_4.get(difference);
                 System.out.println(step_probability_4.get(difference));
                 break;
             case (5):
                 motion_probability = step_probability_5.get(difference);
                 System.out.println(step_probability_5.get(difference));
                 break;
+            case (6):
+                motion_probability = step_probability_6.get(difference);
+                System.out.println(step_probability_6.get(difference));
+                break;
             case (7):
                 motion_probability = step_probability_7.get(difference);
                 System.out.println(step_probability_7.get(difference));
+                break;
+            case (8):
+                motion_probability = step_probability_8.get(difference);
+                System.out.println(step_probability_8.get(difference));
                 break;
             case (9):
                 motion_probability = step_probability_9.get(difference);

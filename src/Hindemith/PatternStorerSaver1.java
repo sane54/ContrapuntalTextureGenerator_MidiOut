@@ -23,6 +23,7 @@ import org.jfugue.*;
 import Hindemith.view.MessageBox;
 
 
+
 /**
  * This class stores and provides access to a JFugue pattern which is the 
  * output of the Model1 class, the class that actually composes the music. 
