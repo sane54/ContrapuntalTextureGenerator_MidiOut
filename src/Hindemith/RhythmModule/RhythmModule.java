@@ -10,8 +10,9 @@ import org.jfugue.*;
 
 import java.util.Random;
 /**
- *
- * @author alyssa
+ *A Simple interface with only one method to generate an array of unpitched
+ * melodic voices. 
+ * @author Trick's Music Boxes
  */
 public interface RhythmModule {
     Pattern[] generate(int pieceLength, int numberOfVoices);

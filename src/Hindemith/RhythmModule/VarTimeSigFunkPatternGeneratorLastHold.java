@@ -31,26 +31,31 @@ public class VarTimeSigFunkPatternGeneratorLastHold  implements RhythmModule{
 		//Loop to generate time signature changes in terms of bar lengths
 		for (int iteration = 0; iteration < pieceLength; iteration++) {
 			int tsig = roll.nextInt(3);
-			System.out.println("tsig " + tsig);
+                        //DEBUG
+			//System.out.println("tsig " + tsig);
 			if (tsig == 0) beatsInBars[iteration] = 2;//2
 			if (tsig == 1) beatsInBars[iteration] = 3;//3
 			if (tsig == 2) beatsInBars[iteration] = 4;//4
 		}
-		
-		System.out.println("starting with # of bars = to " + pieceLength);
+		//DEBUG
+		//System.out.println("starting with # of bars = to " + pieceLength);
 		for (int voice = 0; voice < numberOfVoices; voice++) {     //for each voice
-                    System.out.println("voice " + voice);
+                    //DEBUG
+                    //System.out.println("voice " + voice);
                     Pattern jPattern = new Pattern();
                     jPattern.addElement(new Tempo(tempo));
                         for (int barNum = 0; barNum < pieceLength; barNum++) { // for each bar
-                            System.out.println("bar " + barNum);
+                            //DEBUG
+                            //System.out.println("bar " + barNum);
                             int beat = 1;
                             measure = beatsInBars[barNum];
                             jPattern.add("|");
                             //should also add time signature token but there is no jFugue string for it except in v5
-                            System.out.println("measure length " + measure);
+                            //DEBUG
+                            //System.out.println("measure length " + measure);
                             while (beat <= measure) 	{                      //for each beat
-                                    System.out.println("beat " + beat);
+                                    //DEBUG
+                                    //System.out.println("beat " + beat);
                                     if  (beat == measure) patternIndex = 0;
                                     else if (beat == 1)  patternIndex = (roll.nextInt(8) + 8); //consider adding "|| (beat == 3)""
                                     else patternIndex = (roll.nextInt(7));
@@ -79,16 +84,15 @@ public class VarTimeSigFunkPatternGeneratorLastHold  implements RhythmModule{
                                     if (patternIndex == 22) jPattern.add("A4s C4s C4s Rs");
                                     if (patternIndex == 23) jPattern.add("A4s C4s C4s C4s");
                                     beat++;
-
+                                    //DEBUG
                                     //System.out.println("patternIndex " + patternIndex);
-                                    System.out.println(jPattern.getMusicString());
+                                    //System.out.println(jPattern.getMusicString());
                             }
 			
 			}
                     VoiceArray[voice] = jPattern;
-                    System.out.println("finished voice " + voice);
-                   // Player my_player = new Player();
-                   // my_player.play(jPattern);
+                    //DEBUG
+                    //System.out.println("finished voice " + voice);
 		}
 	return VoiceArray;
     }

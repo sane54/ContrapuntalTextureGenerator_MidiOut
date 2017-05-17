@@ -53,10 +53,9 @@ public class VarTimeSigFunkPatternGeneratorMotif  implements RhythmModule{
                             while (beat <= measure) 	{                      //for each beat
                                     System.out.println("beat " + beat);
                                     if (voice == 0) {
-                                        patternIndex = roll.nextInt(5);
+                                        patternIndex = roll.nextInt(2);
                                         if (patternIndex == 0) jPattern.add("A4s Rs Rs Rs");
-                                        if (patternIndex == 1) jPattern.add("Rs Rs Rs Rs");
-                                        if (patternIndex > 1) jPattern.add("A4s Rs C4s Rs");
+                                        if (patternIndex == 1) jPattern.add("A4s Rs A4s Rs");
                                     }
                                     else {
                                         if (roll.nextInt(4)> 1) jPattern.add(motifString);

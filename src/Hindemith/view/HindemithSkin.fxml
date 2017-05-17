@@ -46,6 +46,8 @@
                       <String fx:value="Drum and Bass Patterns 1" />
                       <String fx:value="Variable Time Signature Funky" />
                       <String fx:value="Variable Time Signature Unfunky" />
+                      <String fx:value="Variable TS Funky Last Hold" />
+                      <String fx:value="Variable TS Funky Motive" />
                     </FXCollections>
                   </items>
                 </ComboBox>

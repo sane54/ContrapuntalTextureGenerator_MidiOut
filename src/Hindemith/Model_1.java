@@ -83,7 +83,8 @@ public class Model_1 {
             resetParams();
             int piece_length = InputParameters.piece_length;
             int tempo_bpm = InputParameters.getTempo();
-            System.out.println("tempo =  " + tempo_bpm);
+            //DEBUG
+            //System.out.println("tempo =  " + tempo_bpm);
             ModeModule my_mode_module = InputParameters.my_mode_module;
             String [] voice_array = InputParameters.voice_array; 
             RhythmModule james = InputParameters.james;       
@@ -145,11 +146,11 @@ public class Model_1 {
                 //Printing voice strings to Standard Out
                 ArrayList<MelodicNote> verify_array = nextVoice.getNoteArray();
                 //DEBUGS
-//                System.out.println("Return Me: ");
-//                for(MelodicNote verify: verify_array) { 
-//                    if (verify.getRest()) System.out.println("rest " + verify.getDuration() + "  " );
-//                    else System.out.println(verify.getPitch() + " " + verify.getDuration() + "   ");
-//                }
+                //System.out.println("Return Me: ");
+                //for(MelodicNote verify: verify_array) { 
+                //  if (verify.getRest()) System.out.println("rest " + verify.getDuration() + "  " );
+                //    else System.out.println(verify.getPitch() + " " + verify.getDuration() + "   ");
+                //  }
                 
                 if (i == 0) {
                     harmonic_prog = nextVoice;
@@ -345,7 +346,7 @@ public class Model_1 {
                     //System.out.println("the current cp note's accent value is " + got_accent);
 
 
-					//MELODICALLY EVALUATE Pitch Candiates for Previous Note - Choose CP WinnerS - Previous CP = CP Winner
+                    //MELODICALLY EVALUATE Pitch Candiates for Previous Note - Choose CP WinnerS - Previous CP = CP Winner
                     pitch_candidates = melodicCheck(pitch_candidates, my_mode_module, alter_me, 
                                  pitch_center, voice_pitch_count, previous_cp_pitch,  previous_melodic_interval, got_accent, harmonic_prog_built);
                     if (stopper) return null;
@@ -416,14 +417,17 @@ public class Model_1 {
 
                         boolean add_motn = true;
                         for(int mc = 0; mc< motion_counts.size(); mc++){
+                            //DEBUG
                             //System.out.println("in 'motion counts ' found motion count " + motion_counts.get(mc).getPreviousPitch() + " / " + motion_counts.get(mc).getSucceedingPitch());
                             if (motion_counts.get(mc).getPreviousPitch() == previous_cp_pitch %12 && motion_counts.get(mc).getSucceedingPitch() == cp_winner %12) {
+                                //DEBUG
                                 //System.out.println("Motion count from " + previous_cp_pitch %12 + " to " + previous_cp_pitch %12 + " FOUND");
                                 motion_counts.get(mc).incrementCount();
                                 add_motn = false;
                             }   
                         }
                         if(add_motn == true) {
+                            //DEBUG
                             //System.out.println("Motion count from " + previous_cp_pitch %12 + " to " + previous_cp_pitch %12 + " not found. Adding");
                             MotionCount my_motionCount = new MotionCount(previous_cp_pitch %12, cp_winner %12);
                             motion_counts.add(my_motionCount);
@@ -460,7 +464,7 @@ public class Model_1 {
 				// Get Pitch Candidates for the CP note given the voice range and key transpose
                 if (stopper) return null;
                 //Debug
-                System.out.println("getting pitch candidates from my modemodule based on key " + key_transpose);
+                //System.out.println("getting pitch candidates from my modemodule based on key " + key_transpose);
                 if(voice_pitch_count == 0) { // If there is no previous pitch ie this is the first note 
                     pitch_candidate_values = my_mode_module.getFirstNotePitchCandidates(alter_me.getRangeMin(), alter_me.getRangeMax(), key_transpose);
                     //DEBUG
@@ -489,7 +493,7 @@ public class Model_1 {
 			//If note is a Rest ie you've just skipped most of the above....      
             else {
                 //DEBUG
-                System.out.println("note in position " + i +" is rest ");
+                //("note in position " + i +" is rest ");
                 if (current_cp_index == -13) {
                     return_me.addMelodicNote(CP_note);
                     //DEBUG
@@ -500,7 +504,7 @@ public class Model_1 {
                 else {
                     pending_rests.add(CP_note);
                     //DEBUG
-                    System.out.println("adding rest to pending rests for note in position " + current_cp_index);
+                    //System.out.println("adding rest to pending rests for note in position " + current_cp_index);
                 }
             }
 			
@@ -705,7 +709,7 @@ public class Model_1 {
             int melody_motion_to_cand = 0;
             
             //DEBUG
-            System.out.println("melodicCheck evaluating pitch candidate " + cand_pitch);
+            //("melodicCheck evaluating pitch candidate " + cand_pitch);
             
             //Check if Dissonant with Root - Does not apply for harmonic prog
             if (prog_built) {

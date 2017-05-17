@@ -21,7 +21,8 @@ public class AtonalNoRepeat implements ModeModule {
 
     @Override
     public ArrayList<Integer> getFirstNotePitchCandidates(int input_range_min, int input_range_max, int key_transpose ) {
-    System.out.println("starting get first Note Pitch Candidates");
+    //DEBUG    
+    //System.out.println("starting get first Note Pitch Candidates");
     ArrayList<Integer> pitch_classes = new ArrayList();
     for (int i = 0; i <12; i++) {
         int j = i;

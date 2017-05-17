@@ -228,17 +228,20 @@ static {
     
     @Override
     public ArrayList<Integer> getFirstNotePitchCandidates(int input_range_min, int input_range_max, int key_transpose ) {
-    System.out.println("starting get first Note Pitch Candidates");
+    //DEBUG
+    //System.out.println("starting get first Note Pitch Candidates");
     Integer[] pitch_classes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     ArrayList<Integer> pitch_candidates = new ArrayList();
-        System.out.println("starting transposition");
+        //DEBUG
+        //System.out.println("starting transposition");
         for (Integer pitch_candidate : pitch_classes) {
             while (pitch_candidate < input_range_min + 8 || pitch_candidate > input_range_max) {
                 pitch_candidate +=  12;
             }
             pitch_candidates.add(pitch_candidate);
         }
-        System.out.println("finish transposition");
+        //DEBUG
+        //System.out.println("finish transposition");
         return pitch_candidates; 
     }
   
@@ -259,7 +262,8 @@ static {
         ArrayList<Integer> pitch_candidates = new ArrayList();
         Integer previous_pitch_class = input_previous_pitch % 12 - key_transpose;
         if (previous_pitch_class < 0) previous_pitch_class += 12;
-        System.out.println("note approached from " + previous_pitch_class);
+        //DEBUG
+        //System.out.println("note approached from " + previous_pitch_class);
         switch (previous_pitch_class) {
             case ( 0 ): 
                 //0 -1 2 -3 4 5 -5 12
@@ -440,51 +444,63 @@ static {
         switch ( p_class ){
             case (0):
                 motion_probability = step_probability_0.get(difference);
-                System.out.println(step_probability_0.get(difference));
+                //DEBUG
+                //System.out.println(step_probability_0.get(difference));
                 break;
             case (1):
                 motion_probability = step_probability_1.get(difference);
-                System.out.println(step_probability_1.get(difference));
+                //DEBUG
+                //System.out.println(step_probability_1.get(difference));
                 break;
             case (2):
                 motion_probability = step_probability_2.get(difference);
-                System.out.println(step_probability_2.get(difference));
+                //DEBUG
+                //System.out.println(step_probability_2.get(difference));
                 break;
             case (3):
                 motion_probability = step_probability_3.get(difference);
-                System.out.println(step_probability_3.get(difference));
+                //DEBUG
+                //System.out.println(step_probability_3.get(difference));
                 break;
             case (4):
                 motion_probability = step_probability_4.get(difference);
-                System.out.println(step_probability_4.get(difference));
+                //DEBUG
+                //System.out.println(step_probability_4.get(difference));
                 break;
             case (5):
                 motion_probability = step_probability_5.get(difference);
-                System.out.println(step_probability_5.get(difference));
+                //DEBUG
+                //System.out.println(step_probability_5.get(difference));
                 break;
             case (6):
                 motion_probability = step_probability_6.get(difference);
-                System.out.println(step_probability_6.get(difference));
+                //DEBUG
+                //System.out.println(step_probability_6.get(difference));
                 break;
             case (7):
                 motion_probability = step_probability_7.get(difference);
-                System.out.println(step_probability_7.get(difference));
+                //DEBUG
+                //System.out.println(step_probability_7.get(difference));
                 break;
             case (8):
                 motion_probability = step_probability_8.get(difference);
-                System.out.println(step_probability_8.get(difference));
+                //DEBUG
+                //System.out.println(step_probability_8.get(difference));
                 break;
             case (9):
                 motion_probability = step_probability_9.get(difference);
-                System.out.println(step_probability_9.get(difference));
+                //DEBUG
+                //System.out.println(step_probability_9.get(difference));
                 break;
             case (10):
                 motion_probability = step_probability_10.get(difference);
-                System.out.println(step_probability_10.get(difference));
+                //DEBUG
+                //System.out.println(step_probability_10.get(difference));
                 break;
             case (11):
                 motion_probability = step_probability_11.get(difference);
-                System.out.println(step_probability_11.get(difference));
+                //DEBUG
+                //System.out.println(step_probability_11.get(difference));
                 break;
         }
         return motion_probability;

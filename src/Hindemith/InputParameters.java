@@ -26,6 +26,8 @@ import Hindemith.RhythmModule.VarNoteFunkRiffPatternGenerator;
 import Hindemith.RhythmModule.VarTimeSigFunkPatternGenerator;
 import Hindemith.RhythmModule.VarTimeSigSuperStraightPatternGenerator;
 import Hindemith.RhythmModule.RhythmModule;
+import Hindemith.RhythmModule.VarTimeSigFunkPatternGeneratorLastHold;
+import Hindemith.RhythmModule.VarTimeSigFunkPatternGeneratorMotif;
 import java.io.File;
 
 /**
@@ -80,7 +82,12 @@ public static void setJames(String generator_string){
         james = new VarTimeSigFunkPatternGenerator();
     if (generator_string.contains("Drum and Bass Patterns 1")) 
         james = new DrumNBassRiffPatternGenerator1();
+    if (generator_string.contains("Variable TS Funky Last Hold")) 
+        james = new VarTimeSigFunkPatternGeneratorLastHold();
+        if (generator_string.contains("Variable TS Funky Motive")) 
+        james = new VarTimeSigFunkPatternGeneratorMotif();
     }
+
 
 public static String testJames() {
     return james.toString();
