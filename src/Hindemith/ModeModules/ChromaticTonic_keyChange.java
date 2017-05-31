@@ -440,7 +440,7 @@ static {
         Integer difference = input_current_pitch_cand - input_previous_pitch;
         Double motion_probability = 0.00;
         Integer p_class = (input_previous_pitch - key_transpose) % 12;
-        System.out.println("getting probability for " + difference + "steps from " + p_class);
+        //System.out.println("getting probability for " + difference + "steps from " + p_class);
         switch ( p_class ){
             case (0):
                 motion_probability = step_probability_0.get(difference);

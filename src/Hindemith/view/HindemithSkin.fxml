@@ -48,6 +48,8 @@
                       <String fx:value="Variable Time Signature Unfunky" />
                       <String fx:value="Variable TS Funky Last Hold" />
                       <String fx:value="Variable TS Funky Motive" />
+                      <String fx:value="Variable TS Straight Time" />
+                      <String fx:value="Variable TS Funk Riff Multibar" />
                     </FXCollections>
                   </items>
                 </ComboBox>

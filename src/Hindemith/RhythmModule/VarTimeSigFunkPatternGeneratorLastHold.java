@@ -30,12 +30,15 @@ public class VarTimeSigFunkPatternGeneratorLastHold  implements RhythmModule{
 		
 		//Loop to generate time signature changes in terms of bar lengths
 		for (int iteration = 0; iteration < pieceLength; iteration++) {
-			int tsig = roll.nextInt(3);
+			int tsig = roll.nextInt(6);
                         //DEBUG
 			//System.out.println("tsig " + tsig);
 			if (tsig == 0) beatsInBars[iteration] = 2;//2
 			if (tsig == 1) beatsInBars[iteration] = 3;//3
 			if (tsig == 2) beatsInBars[iteration] = 4;//4
+                        if (tsig == 3) beatsInBars[iteration] = 5;//2
+			if (tsig == 4) beatsInBars[iteration] = 6;//3
+			if (tsig == 5) beatsInBars[iteration] = 7;//4
 		}
 		//DEBUG
 		//System.out.println("starting with # of bars = to " + pieceLength);

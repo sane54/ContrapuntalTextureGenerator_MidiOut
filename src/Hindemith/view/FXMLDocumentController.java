@@ -15,6 +15,7 @@
 package Hindemith.view;
 
 import Hindemith.InputParameters;
+import Hindemith.PatternQueueStorerSaver;
 import Hindemith.PatternStorerSaver1;
 import java.io.File;
 import java.net.URL;
@@ -307,11 +308,14 @@ public class FXMLDocumentController implements Initializable {
         CancelBox.show("Save " + pattern_or_queue, " ");
         proceed = CancelBox.getProceed();
         if (proceed) {
-            if (InputParameters.getFilePath() == null) handleFileChooserButton();
-            PatternStorerSaver1.save_pattern();
-        }
-        if (Hindemith.InputParameters.get_q_mode() == false) {
-            PatternStorerSaver1.clear_pattern();
+            if (Hindemith.InputParameters.get_q_mode() == true) {
+                PatternQueueStorerSaver.save_queue();
+            }
+            else {
+                if (InputParameters.getFilePath() == null) handleFileChooserButton();
+                PatternStorerSaver1.save_pattern();
+                PatternStorerSaver1.clear_pattern();
+            }
         }
     }
     
@@ -327,7 +331,7 @@ public class FXMLDocumentController implements Initializable {
             String dateString = DATE_FORMAT.format(today);
             int tempo_bpm = InputParameters.getTempo();
             final FileChooser fileChooser = new FileChooser();
-            File dirLoc = new File ("C:\\Users\\Owner\\Desktop\\Species Midi");
+            File dirLoc = new File ("C:\\Users\\Owner\\Desktop");
             fileChooser.setInitialDirectory(dirLoc);
             fileChooser.setInitialFileName(tempo_bpm + "-" + dateString);
             fileChooser.getExtensionFilters().addAll(
@@ -398,14 +402,14 @@ public class FXMLDocumentController implements Initializable {
         if (pcons_oct_chk.isSelected()) pcons.add(0);
         
         if (cons.isEmpty()) {
-            if (firstRun) MessageBox.show("You have to define at least 1 consonance", "Using Default Consonance Array");
-            else  MessageBox.show("You have to define at least 1 consonance", "Using Previous Consonance Array");
+            if (firstRun) MessageBox.show("You have to define at least 1 consonance. Using Defaults", "Using Default Consonance Array");
+            else  MessageBox.show("You have to define at least 1 consonance. Using previous consonances", "Using Previous Consonance Array");
         }
         else Hindemith.InputParameters.setConsonances(cons.toArray(new Integer[cons.size()]));
         
         if (pcons.isEmpty())  {
-            if (firstRun) MessageBox.show("You have to define at least 1 perfect consonance", "Using Default Perfect Consonance Array");
-            else MessageBox.show("You have to define at least 1 perfect consonance", "Using Previous Perfect Consonance Array");
+            if (firstRun) MessageBox.show("You have to define at least 1 perfect consonance. Using Defaults", "Using Default Perfect Consonance Array");
+            else MessageBox.show("You have to define at least 1 perfect consonance. Using previous", "Using Previous Perfect Consonance Array");
 
         }
         else Hindemith.InputParameters.setPerfectConsonances(pcons.toArray(new Integer[pcons.size()]));

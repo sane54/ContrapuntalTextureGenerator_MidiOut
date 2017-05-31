@@ -28,6 +28,8 @@ import Hindemith.RhythmModule.VarTimeSigSuperStraightPatternGenerator;
 import Hindemith.RhythmModule.RhythmModule;
 import Hindemith.RhythmModule.VarTimeSigFunkPatternGeneratorLastHold;
 import Hindemith.RhythmModule.VarTimeSigFunkPatternGeneratorMotif;
+import Hindemith.RhythmModule.VarTimeSigMultiBarFunkRiffPatternGenerator;
+import Hindemith.RhythmModule.VarTimeSigStraightPatternGenerator;
 import java.io.File;
 
 /**
@@ -84,8 +86,12 @@ public static void setJames(String generator_string){
         james = new DrumNBassRiffPatternGenerator1();
     if (generator_string.contains("Variable TS Funky Last Hold")) 
         james = new VarTimeSigFunkPatternGeneratorLastHold();
-        if (generator_string.contains("Variable TS Funky Motive")) 
+    if (generator_string.contains("Variable TS Funky Motive")) 
         james = new VarTimeSigFunkPatternGeneratorMotif();
+    if (generator_string.contains("Variable TS Straight Time")) 
+        james = new VarTimeSigStraightPatternGenerator();
+    if (generator_string.contains("Variable TS Funk Riff Multibar")) 
+        james = new VarTimeSigMultiBarFunkRiffPatternGenerator();
     }
 
 
@@ -144,7 +150,7 @@ public static void setFilePath(File file) {
 public static File getFilePath() {
     if(filePath != null) return filePath;
     else {
-        System.out.println("file path is null");
+        //System.out.println("file path is null");
         return null;
         }
     }

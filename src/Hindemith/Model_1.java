@@ -229,7 +229,8 @@ public class Model_1 {
             //save and play the pattern as a MIDI file
             //DEBUG
             //System.out.println(music_output.getMusicString());
-            PatternStorerSaver1.add_pattern(music_output);
+            if (Hindemith.InputParameters.get_q_mode()) PatternQueueStorerSaver.add_pattern_to_queue(music_output);
+            else PatternStorerSaver1.add_pattern(music_output);
             //all done
             completedWorkSteps++;
             updateProgress(completedWorkSteps, totalWorkSteps);

@@ -24,6 +24,7 @@ package Hindemith.view;
 
 import Hindemith.InputParameters;
 import Hindemith.MidiOut;
+import Hindemith.PatternQueueStorerSaver;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.concurrent.Task;
@@ -51,6 +52,7 @@ public class PlayerBox {
     static Player pps_player;
     static Pattern pattern_to_play;
     static Sequencer mysequencer;
+    static Integer queue_index;
     
     public PlayerBox() {
         nowshow ("Now Playing", "Pattern Player", jwstage);   
@@ -64,12 +66,10 @@ public class PlayerBox {
      */
     private void nowshow (String message, String title, Stage stage) {
         boolean usedefault = true;
-        pattern_to_play  = Hindemith.PatternStorerSaver1.get_pattern();
+        if (!Hindemith.InputParameters.get_q_mode()) pattern_to_play  = Hindemith.PatternStorerSaver1.get_pattern();
         if (InputParameters.get_out_to_midi_yoke())  {
             MidiOut.setDevice();
             if (MidiOut.device != null) {
-//                Sequence music_sequence = pps_player.getSequence(pattern_to_play);
-//                MidiOut.device.sendSequence(music_sequence);
                 jplayer myjplayer = new jplayer();
                 try {
                     Sequencer myseq = myjplayer.getSequencerConnectedToDevice(MidiOut.device);
@@ -166,7 +166,15 @@ public class PlayerBox {
                         pps_player.resume();
                     }
                     else {
-                        pps_player.play(pattern_to_play);
+                        if (!Hindemith.InputParameters.get_q_mode()) pps_player.play(pattern_to_play);
+                        else {
+                            queue_index = 0;
+                            while (queue_index < PatternQueueStorerSaver.get_queue_size()) {
+                                pps_player.play(Hindemith.PatternQueueStorerSaver.get_queue_pattern(queue_index));
+                                queue_index++;
+                            }
+
+                        }
                     }
 
                     while (true) {
