@@ -1,0 +1,266 @@
+Hindemith Main Algorithm
+
+Model
+	Calls the specified rhythm generator to generate an array of patterns for given # of voices
+		Each pattern consists of an array of generically pitched jfugue note objects. 
+		We don't care about the pitch at this point
+	For each pattern, convert its jfugue notes into MelodicNotes
+		Melodic Notes extend the jfugue note class
+		A Melodic Note can be accented. Ordinary Jfugue notes can't be accented.
+		The code that assigns accents is called AccentListener. 
+		A pattern of Melodic Notes is a Melodic Voice
+		So we now have an array of Melodic Voices
+	Now, for each Melodic Voice in the array we will assign Pitches by calling	
+
+			Build Voice Pitches which in turn calls:
+				Melodic Check
+				Harmonic Check
+				Pick Winners
+	So we now have an array of arrays of MelodicNotes that now have melodic pitches - aka Built Voices
+	Now, for each Built Voice we take its MelodicNotes and convert them to regular jfugue notes
+		This is so we can create a multi-voice jfugue pattern that can be played and saved as midi
+	Model returns this pattern to the calling program
+		which then gives the user the option to play or save it. 
+		
+		
+Build Voice Pitches
+The build voice pitches algorithm constructs a counterpoint (CP) that works best with all previously built voices. 
+	Load harmonic progression and previously built voices. Each of these will act as a Cantus Firmus to the voice we are building		
+	If a harmonic progression was built already,
+		add its Melodic notes to a Linked List representing the chord progression.
+	Then, for each previously built voice, fill a linked list with melodic notes from that voice.
+		We create a linked list so we can just pop entries from the beginning of the list
+		The linked list is a copy - the original built voice is intact
+	For each (as yet unpitched) melodic note in the counterpoint (current voice)
+		Run Melodic check for pitch candidates for the PREVIOUS melodic note in the CP. 
+			Why do we do this? 
+			Melodic Checks were originally tightly coupled with Pick Winner process. 
+			There might be a way to uncouple the two routines and run melodic checks 
+			after pick winner and therefore on the current note instead of previous. 
+			We might explore that in future version of the software.
+		Pick winner from the pitch candidates for previous melodic note.
+			Why do we do this?
+			Because the previous note is in play until we pop the current note
+			You don't know how long the previous note has been in play based on its duration
+			because there may be rests in between the previous note and the current note.
+			So you can't give this previous CP note a pitch until its pitch candidates have been compared against
+			all of the CF pitches that sound during its duration, and that duration may include rests.
+			Each pitch candidate for our note has been decremented by various penalty amounts
+			given by melodic and harmonic preference violations caused by the intervals it forms
+			with surrounding pitches. 
+			If more than 1 pitch candidate has the highest score, then pick a winner at random.
+		However, if this is the first unpitched melodic note in the CP voice, then we skip the melodic check and the pick winner routines
+		Recalculate statistics factoring in the just-picked pitch of previous melodic note
+			Melodic Peaks and troughs
+				A motion change is a change in direction from up to down. A peak is a motion change up to then down from the highest pitch of the melody. 
+				A trough is a motion change down to then up from the lowest pitch of the melody. 
+				Here we consider three pitches, the just chosen pitch and the two chosen pitches immediately prior to it. 
+				If the melodic interval formed by the two previously chosen pitches was negative (ie from higher to lower pitch) AND 
+				the motion between the just chosen pitch and its immediately prior chosen pitch is positive, we have a down-up motion change. 
+				If the melodic interval formed by the two previously chosen pitches was positive (upward) AND 
+				the motion between the just chosen pitch and its immediately prior chosen pitch is negative (down), we have a up-down motion change. 
+				Compare the motion change to the current trough in the melody - if down-up then the middle note of that trio - ie the immedidately prior pitch
+				to the just-chosen pitch could be a trough. Compare this pitch to the current trough... if it's lower than its a new trough, 
+				if it's the same pitch as the current trough, then we have a duplicate (somewhat undesireable), if it's higher, then we do nothing. 
+				A similar logic holds for the peak of the melody. 
+			Melodic Motion counts
+		
+		If counterpoint note isn't a rest, get pitch candidates from the mode 
+			These are the notes specified by the mode for a particular tonic. The modes are always in the key (tonic) of C.
+			Because we are changing keys we need to compute a transposition of the key of the mode. We do this by relating the note to the already built
+			harmonic progression. If this voice IS the harmonic progression, it stays in the key of C. 
+			A chord change is used to 1. transpose the mode members and 2. to calculate dissonant w root. 					
+			A chord change is always the smallest rhythmic unit. It will never occur before and be held into a CP note. When you get a non-rest CP note, you pop them from 
+			the harmonic stack until you find one that starts at the same time as the CP. Similarly you don't have to track them after the CP. When you change key x by
+			a positive amount to key y, the pitchclass of each of the tones in key x decreases by the same amount.
+		Otherwise if it is a rest, add it to pending rests array. 
+
+
+		If there are built voice linked lists in the built_voices stack
+			for each built voice linked list you find all the pitches that sound during the duration of the counterpoint note.  
+				(do)
+				if there is a pitch in the built voice that is still sounding when the counterpoint note begins (ie from holdover vector), use that pitch
+				if there isn't any note being held over, pop a note from the linked list of the built voice
+				 
+				If the note you just popped is a rest and is either greater than a 1/2 rest, or the previous_cf_pitch is 1111, 
+				then skip harmonic checks because the built voice pitch occurred too far in the past to form detectable intervals with pitch candidates for 
+				the counterpoint pitch. 
+					This prevents the algorithm from wasting cycles and potentially creating un-natural music. 
+				If the note you just popped is a rest and the counterpoint note under evaluation is also a rest, skip harmonic checks
+				
+				previous_cf_pitch == a vector of notes representing the pitch in each of the other voices 
+					that is sounded prior to the pitch sounding at the time the current melodic note sounds
+					Each entry in the vector is initialized to a dummy value of 1111
+					An entry value 1111 indicates that there have only been rests thus far in that voice. 
+				
+				Run basic harmonic checks if this is the very first note of the voice ie the entry in previous_cf_pitch vector is 1111 
+				Otherwise run advanced harmonic checks. 
+				
+					set previous_cp_pitch to 9999
+						9999 is assigned in case CP is held over into next CF note in which case the do/while loop will repeat.
+						In the harmonic checks when 9999 is enountered, the previous_cp_pitch is set to the pitch candidate to be evaluated. 
+						The harmonic checks module still needs to take into account the previous_cp_pitch for non-melodic reasons.
+						When you break out of while loop  you've found all pitches simultaneous with your counterpoint note and run harmonic checks with them. 
+						previous_cp_pitch will be reassigned the value of winning pitch candidate 
+
+					Put the note you popped from the linked list of this voice into the corresponding position in the previous_cf_pitch vector
+					
+				if the counterpoint note ends before the voice note does, you need to hold over this voice note into the next counterpoint. 
+					You do this by storing it in a vector of held-over notes. 
+					If the Counterpoint note ends with or after the voice, null out any existing held-over notes.
+				(while) If the counterpoint note ends after this CF voice note, it is held into the next CF voice note, so pop another CF voice note. 
+						Note that there won't be any held-over note in this case. 
+	Get the next unpitched counterpoint note. 
+	
+Scenarios: 
+CF is pitched	CP is a rest	CP occurs at same time as CF -> Run Harmonic Checks with CF and pitch-candidates for previous CP note
+CF is pitched 	CP is a rest	CP occurs before CF note -> Run Harmonic Checks with CF and pitch-candidates for previous CP note
+CF is pitched 	CP is a rest	CP occurs after CF -> Run Harmonic Checks with CF and pitch-candidates for previous CP note
+CF is pitched 	CP is pitched 	CP occurs at same time as CF -> Normal, Run Harmonic Checks
+CF is pitched 	CP is pitched 	CP occurs before CF note -> Reuse Pitch_Candidates, while loop iterates, Run Harmonic Checks
+CF is pitched 	CP is pitched 	CP occurs after CF -> CF hold-over scenario, ie CF has been stored in hold-over vector, Run Harmonic Checks
+
+CF is rest	CP is a rest	CP occurs at same time as CF -> Skip harmonic checks - pitch-candidate scores are unchanged
+CF is rest 	CP is a rest	CP occurs before CF note -> Skip harmonic checks - pitch-candidate scores are unchanged
+CF is rest 	CP is a rest	CP occurs after CF - > Skip harmonic checks - pitch-candidate scores are unchanged
+CF is rest 	CP is pitched 	CP occurs at same time as CF -> Run Harmonic Checks aginst CP Pitch Candidates and previous_cf_pitch entry for that voice
+CF is rest 	CP is pitched 	CP occurs before CF note -> ATM the algorithm runs harmonic checks, algorithm should skip because checks against previous_cf_pitch were already run
+CF is rest 	CP is pitched 	CP occurs after CF -> if CP occurs more than 1/2 note after CF, Skip Harmonic Checks, else Run Harmonic Checks aginst CP Pitch Candidates and previous_cf_pitch entry for that voice
+*****************************************************************************************************	
+Example of Build Voice Pitches algorithm:
+	Four notes X R Y Z (where R means "rest")
+	Pop note A
+		Rest? No
+		1st Note? Yes ==> Skip melodic checks, and pick winners
+		Get pitch candidates (first note pitch candidates) for X
+		Run Harmonic Checks for the pitch candidates against CF notes that sound during the duration of X in each previously built voice
+		Last Note? No ==> Skip last note melodic checks
+	Pop note R
+		Rest? Yes ==> Skip melodic checks
+		Run Harmonic Checks for the pitch candidates against CF notes that sound during the duration of this rest in each previously built voice
+	Pop note Y
+		Rest? No
+		1st Note? No
+			Run Melodic Check on pitch candidates for X, note that there is no previous pitch to X so a lot of the Melodic Check will be skipped
+			Assign pitch for note X
+		Get pitch candidates for Y, factoring in key change, and previous pitch X
+		Run Harmonic Checks for the pitch candidates against CF notes that sound during the duration of X in each previously built voice
+		Last Note? No ==> Skip last note melodic checks
+	Pop note Z
+		Rest? No
+		1st Note? No
+			Run Melodic Check on pitch candidates for Y, given previous pitch of note X
+			Assign pitch for note Y
+		Get pitch candidates for Z, factoring in key change, and previous pitch Y
+		Run Harmonic Checks for the pitch candidates against CF notes that sound during the duration of Z in each previously built voice
+		Last Note? Yes
+			Run Melodic Check on pitch candidates for Z, given previous pitch of note Y
+			Assign pitch for note Z
+			
+
+****************************************************************************************************************************
+Melodic Checks
+****************************************************************************************************************************
+For each pitch candidate 
+	Decrement if dissonant w root key - this isn't configurable - set to 0
+	decrement 50% chance if not pitch not tonic of key - this is also set to 0
+	decrement if outside midi range - not really needed anymore - give error message instead of 
+	decrement if remote from pitch center
+	If there is a preceding pitch
+	decrement if the pitch candidate has come after the previous pitch too often in the melody already:            
+        Look for previous_cp_pitch in PitchCount
+        If it's there get how many times it's appeared in the melody
+        If the count is greater than samplesize threshold
+        Check if there are previous_cp_pitch to pitch_candidate motions in MOtion Counts
+        If so get the motion count - then divide motion count by pitch count
+        Get the percentage of motions from mode module
+        If actual count is greater than mode module percentage decrement
+	If there is more than 1 preceding pitch
+	We will have calculated the sequence of the last two previous pitches
+	decrement the pitch candidate if it would form a repeating peak or trough in the melody
+        A melodic phrase should have no more than two peaks and two troughs
+        A peak is defined as a change in melodic direction 
+        so when a candidate pitch wants to go in the opposite direction of the previous melodic interval,
+		we want to increment the peak or trough count accordingly
+        and determine whether we have more than two peaks or more than two troughs.
+        Note that the melody can always go higher or lower than the previous peak or trough
+	decrement if it would form successive leaps
+	        First check if the melody does not go in opposite direction of leap
+            Then check if there are two successive leaps in the same direction
+	decrement if it would form a bad motion after a leap
+	
+
+*************************************************************************************************************************			
+Logic Behind Harmonic Checks
+ is this interval consonant
+ is previous_interval consonant
+ 
+ decrement if an octave (this_interval)
+ decrement if a minor 9th (this_interval)
+ decrement accented dissonance (this_interval, get_accent)
+ check for pitch candidate dissonance against previous cantus firmus (pitch_cand, previous_cf_pitch)
+ check for same type of consonance (this_interval_consonant, previous_interval_consonant)
+ check for sequence of dissonances (this_interval_consonant, previous_interval_consonant)
+ check for too long a sequence of same interval (this_interval, previous_interval)
+
+if CF starts before CP
+	 check for a bad oblique motion to a dissonance from a consonance, based on CP motion
+	 check for a bad oblique motion to consonance from dissonance, based on CP motion
+	 check for a bad oblique motion to dissonance from dissonance, based on CP motion
+if CF starts after CP
+	check for bad oblique motion into consonance from dissonance, based on CF motion
+	check for bad oblique motion into dissonance from dissonance, based on CF motion
+	note that an oblique motion from a consonance to dissonance isn't evaluated
+if CP and CF start at the same time
+	 Check for sequence of same perf consonance
+	 Check for parallel perf consonance
+	 Check for direct motion into perf consonance
+	 Check for direct motion into Dissonance
+		
+		
+*************************************************************************************************************************
+Rhythm Generators:
+These output one or more patterns consisting of unpitched melodic notes (ie like jfugue notes except they can be accented).
+There aren't any rules as to how these patterns can be generated, the simple interface contains just one method to generate 
+patterns. 
+In practice the patterns must follow a few rules - the first pattern is treated as the chord progression. It must be in the smallest rhythmic
+unit - usually 16th notes. The notes signal the chord change which is then held until the next chord change. So a typical
+harmonic progression consists of a single pitched sixteenth note followed by rests. 
+
+In all voices, C4 represents an ordinary unpitched note whereas A4 represents an accented note. 
+
+It is important to specify which notes are accented and which are not, since the counterpoint will depend largely on what 
+happens on accented notes. 
+
+There are two paradigms for creating Rhythm Generators. 
+
+The first is to compile a dictionary of patterns. These must all be the same length. The generator
+cycles somewhat randomly between these patterns. For example for the first voice, aka the chord progression, there can be 
+one or more patterns, each of which represents a different harmonic rhythm. The generator can then cycle between different
+patterns stringing them together to form the final chord progression of the contrapuntal texture. The upper voices can have
+any length note or rest. We can influence the probability that a particular pattern is selected by increasing the range of 
+random values allotted to it. 
+
+The second paradigm involves permutations of 16th notes within a beat, which we choose from somewhat at random. If we want a 
+particular permutation to appear more frequently we assign a relatively large proportion of random values to it. 
+
+****************************************************************************************************************************
+Accent Listeners
+If a note is explicitly marked as accented (A4) then the accent value of the note will be set as such.
+The first criteria is that it's longer than a certain threshold value
+In the case of most music that is the eighth note.
+If it isn't greater than the threshold value check if it's syncopated
+To be syncopated it must be longer than the minimum unit which is usually the 16th
+It also must be held over from the previous tick of a minimum unit. 
+If it isn't syncopated, it still might be accented if it is longer
+than the previous note.
+If the note isn't considered accented yet, there's still one test
+regardless of its size, which is: if it's as long as the prior 
+note and the prior note is not accented, then this pending note
+is accented.
+If the ticker == 0 this means that everything up to this point
+terminated on the first tick of an eigth note,
+which means that THIS note STARTS on the second tick 
+of an eighth note, which means it will be a syncopation
+if it's held over into the next eighth note duration.
+
