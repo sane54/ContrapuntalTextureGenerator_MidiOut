@@ -45,6 +45,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
 import javafx.stage.FileChooser;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -309,6 +310,20 @@ public class FXMLDocumentController implements Initializable {
         proceed = CancelBox.getProceed();
         if (proceed) {
             if (Hindemith.InputParameters.get_q_mode() == true) {
+                boolean newQDir = true;
+                if(InputParameters.getQueueDir() != null) {
+                    CancelBox.show("Change Queue Directory", Hindemith.InputParameters.getQueueDir().getAbsolutePath());
+                    newQDir = CancelBox.getProceed();
+                }
+                if (newQDir) {
+                    DirectoryChooser directoryChooser = new DirectoryChooser();
+                    File selectedDirectory = directoryChooser.showDialog(ctrlStage);
+                    if (selectedDirectory != null) {
+                        Hindemith.InputParameters.setQueueDirectory(selectedDirectory.getAbsolutePath());
+                        Hindemith.InputParameters.setQueueDir(selectedDirectory);
+                    }                    
+                }
+
                 PatternQueueStorerSaver.save_queue();
             }
             else {
@@ -331,8 +346,11 @@ public class FXMLDocumentController implements Initializable {
             String dateString = DATE_FORMAT.format(today);
             int tempo_bpm = InputParameters.getTempo();
             final FileChooser fileChooser = new FileChooser();
-            File dirLoc = new File ("C:\\Users\\Owner\\Desktop");
-            fileChooser.setInitialDirectory(dirLoc);
+            if (Hindemith.InputParameters.getFileDir() != null) {
+                File dirLoc = Hindemith.InputParameters.getFileDir();
+                System.out.println(dirLoc);
+                fileChooser.setInitialDirectory(dirLoc);
+            }
             fileChooser.setInitialFileName(tempo_bpm + "-" + dateString);
             fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("MIDI", "*.mid"), 

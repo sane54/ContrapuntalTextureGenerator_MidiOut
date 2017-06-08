@@ -52,12 +52,28 @@ static String [] voice_array = {"bass", "soprano",  "ultra", "tenor"};
 static RhythmModule james = new VarNoteFunkRiffPatternGenerator();
 static boolean large_dissonance_bad = false;
 static File filePath = null;
+static File queueDir = null;
+static File fileDir = null;
+static String queue_directory = null;
+
 
 public static Boolean get_out_to_midi_yoke () {
     return out_to_midi_yoke;
 }
-
-
+ public static void setQueueDirectory(String direct) {
+     queue_directory = direct;
+ }
+ 
+ public static String getQueueDirectory() {
+     return queue_directory;
+ }
+ public static void setQueueDir(File direct) {
+     queueDir = direct;
+ }
+ 
+ public static File getQueueDir() {
+     return queueDir;
+ }
 public static void set_out_to_midi_yoke (Boolean out2yoke) {
     out_to_midi_yoke = out2yoke;
 }
@@ -145,6 +161,7 @@ public static void setPerfectConsonances(Integer [] my_perf_consonances) {
     }
 public static void setFilePath(File file) {
     filePath = file;
+    if (file != null) fileDir = file.getParentFile();
     }
 
 public static File getFilePath() {
@@ -153,5 +170,14 @@ public static File getFilePath() {
         //System.out.println("file path is null");
         return null;
         }
-    }
+}
+
+public static File getFileDir() {
+    if(fileDir!= null) return fileDir;
+    else {
+        //System.out.println("file path is null");
+        return null;
+        }
+}
+
 }

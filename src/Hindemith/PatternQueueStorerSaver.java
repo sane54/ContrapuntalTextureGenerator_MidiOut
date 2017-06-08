@@ -54,6 +54,7 @@ public class PatternQueueStorerSaver {
         for (int i = 0; i < pattern_queue.size(); i++) {
             save_pattern(pattern_queue.get(i), i);
         }
+        clear_queue();
     }
 
     
@@ -65,25 +66,27 @@ public class PatternQueueStorerSaver {
     public static void save_pattern(Pattern pattern, int i) {
              //save the pattern
             Date today = new Date(System.currentTimeMillis());
-            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd-yyyy-HH-mm");
+            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd-yyyy-HH-mm-ss");
             String dateString = DATE_FORMAT.format(today);
-            if(InputParameters.filePath != null) {
+            if(InputParameters.getQueueDirectory() != null) {
+//                String mydir = InputParameters.getQueueDirectory();
+//                System.out.println(mydir);
                 try {
-                pps_player.saveMidi(pattern, InputParameters.filePath);
+                pps_player.saveMidi(pattern, new File(mydir + "\\" + tempo_bpm + "-" + dateString + "-" + i + ".mid"));
                 }
                 catch (IOException ex) {
                     MessageBox.show("couldn't save pattern in file location", "fail");
                 }
             }    
-            else {
-                try {
-                    pps_player.saveMidi(pattern, new File("saved queue\\"+tempo_bpm + "-" + dateString + "-" + i + ".mid"));
-                }
-                catch (IOException ex2) {
-                MessageBox.show("couldn't save pattern in file location", "fail");
-                }
-            } 
-            InputParameters.setFilePath(null);
+//            else {
+//                try {
+//                    pps_player.saveMidi(pattern, new File(tempo_bpm + "-" + dateString + "-" + i + ".mid"));
+//                }
+//                catch (IOException ex2) {
+//                MessageBox.show("couldn't save pattern in file location", "fail");
+//                }
+//            } 
+//            InputParameters.setFilePath(null);
     }
    
     public static void resetPlayer() {
