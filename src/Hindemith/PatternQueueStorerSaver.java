@@ -69,8 +69,8 @@ public class PatternQueueStorerSaver {
             SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd-yyyy-HH-mm-ss");
             String dateString = DATE_FORMAT.format(today);
             if(InputParameters.getQueueDirectory() != null) {
-//                String mydir = InputParameters.getQueueDirectory();
-//                System.out.println(mydir);
+                String mydir = InputParameters.getQueueDirectory();
+                //System.out.println(mydir);
                 try {
                 pps_player.saveMidi(pattern, new File(mydir + "\\" + tempo_bpm + "-" + dateString + "-" + i + ".mid"));
                 }
