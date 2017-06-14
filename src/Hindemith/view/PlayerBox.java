@@ -53,6 +53,7 @@ public class PlayerBox {
     static Pattern pattern_to_play;
     static Sequencer mysequencer;
     static Integer queue_index;
+    static boolean usedefault = true;
     
     public PlayerBox() {
         nowshow ("Now Playing", "Pattern Player", jwstage);   
@@ -65,28 +66,28 @@ public class PlayerBox {
      * @param stage 
      */
     private void nowshow (String message, String title, Stage stage) {
-        boolean usedefault = true;
+
         if (!Hindemith.InputParameters.get_q_mode()) pattern_to_play  = Hindemith.PatternStorerSaver1.get_pattern();
-        if (InputParameters.get_out_to_midi_yoke())  {
-            MidiOut.setDevice();
-            if (MidiOut.device != null) {
-                jplayer myjplayer = new jplayer();
-                try {
-                    Sequencer myseq = myjplayer.getSequencerConnectedToDevice(MidiOut.device);
-                   pps_player = new Player(myseq);
-                   usedefault = false;
-                } catch (MidiUnavailableException ex) {
-                }
-            }
-            else {
-                InputParameters.set_out_to_midi_yoke(false);
-                MessageBox.show( "No Midi Output", "Using default midi sounds");
-                usedefault = true;
-            }
-           
-            
-        }
-        if (usedefault) pps_player = new Player();
+//        if (InputParameters.get_out_to_midi_yoke())  {
+//            MidiOut.setDevice();
+//            if (MidiOut.device != null) {
+//                jplayer myjplayer = new jplayer();
+//                try {
+//                    Sequencer myseq = myjplayer.getSequencerConnectedToDevice(MidiOut.device);
+//                    pps_player = new Player(myseq);                   
+//                    usedefault = false;
+//                } catch (MidiUnavailableException ex) {
+//                }
+//            }
+//            else {
+//                InputParameters.set_out_to_midi_yoke(false);
+//                MessageBox.show( "No Midi Output", "Using default midi sounds");
+//                usedefault = true;
+//            }
+//           
+//            
+//        }
+        pps_player = new Player();
             
         LauncherThread starter_thread = new LauncherThread();
         Thread PlayerStarterThread = new Thread((Runnable) starter_thread.worker);
@@ -151,6 +152,23 @@ public class PlayerBox {
         //System.out.println("about to show and wait stage");
         stage.showAndWait();
     }
+    public void midiInitialize() {
+        MidiOut.setDevice();
+        if (MidiOut.device != null) {
+            jplayer myjplayer = new jplayer();
+            try {
+                Sequencer myseq = myjplayer.getSequencerConnectedToDevice(MidiOut.device);
+                pps_player = new Player(myseq);                   
+                usedefault = false;
+            } catch (MidiUnavailableException ex) {
+            }
+        }
+        else {
+            InputParameters.set_out_to_midi_yoke(false);
+            MessageBox.show( "No Midi Output", "Using default midi sounds");
+            usedefault = true;
+        }
+    }
     /**
      * The launcher for the player thread. 
      */
@@ -166,10 +184,27 @@ public class PlayerBox {
                         pps_player.resume();
                     }
                     else {
-                        if (!Hindemith.InputParameters.get_q_mode()) pps_player.play(pattern_to_play);
+                        if (!Hindemith.InputParameters.get_q_mode()){
+
+                            if (Hindemith.InputParameters.get_out_to_midi_yoke()){
+                                System.out.println("still out to midiyoke");
+                                midiInitialize();
+//                                if(pps_player.isFinished()) System.out.println("Player is Finished");
+//                                if(pps_player.isPaused()) System.out.println("Player is paused");
+//                                if(pps_player.isPlaying()) System.out.println("Player is still playing");
+//                                if(pps_player.isStarted()) System.out.println("Player is started");
+                            }
+                            else usedefault = true;
+                            System.out.println("usedefault = " + usedefault);
+                            if (usedefault) pps_player = new Player();
+                            pps_player.play(pattern_to_play);
+                        }
                         else {
                             queue_index = 0;
                             while (queue_index < PatternQueueStorerSaver.get_queue_size()) {
+                                if (Hindemith.InputParameters.get_out_to_midi_yoke()) midiInitialize();
+                                else usedefault = true;
+                                if (usedefault) pps_player = new Player();
                                 pps_player.play(Hindemith.PatternQueueStorerSaver.get_queue_pattern(queue_index));
                                 queue_index++;
                             }

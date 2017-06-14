@@ -301,6 +301,8 @@ public class FXMLDocumentController implements Initializable {
         if (Hindemith.InputParameters.get_q_mode() == true) {
             pattern_or_queue = "Queue?";
         }
+        else Hindemith.PatternQueueStorerSaver.clear_queue();
+        
         CancelBox.show("Play " + pattern_or_queue, " ");
         proceed = CancelBox.getProceed();
         if (proceed) {
@@ -332,6 +334,10 @@ public class FXMLDocumentController implements Initializable {
                 PatternStorerSaver1.clear_pattern();
             }
         }
+        if (Hindemith.InputParameters.get_q_mode() == false) {
+            PatternStorerSaver1.clear_pattern();
+        }
+        
     }
     
     @FXML
